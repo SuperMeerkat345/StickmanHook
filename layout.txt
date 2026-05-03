@@ -1,0 +1,24 @@
+THIS IS THE LAYOUT OF THE PROJECT
+
+project/
+│
+├── main.py
+├── settings.py          # optional (constants like screen size, colors)
+├── game.py              # optional (main game loop class)
+│
+├── assets/
+│   ├── images/
+│   ├── sounds/
+│   ├── fonts/
+│
+├── sprites/
+│   ├── player.py
+│   ├── enemy.py
+│   ├── bullet.py
+│
+├── scenes/              # optional (menus, levels, etc.)
+│   ├── menu.py
+│   ├── level1.py
+│
+└── utils/
+    ├── helpers.py
