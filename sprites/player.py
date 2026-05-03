@@ -9,9 +9,10 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         
         # visual
-        self.radius = 30
-        self.surf = pygame.Surface((self.radius, self.radius), pygame.SRCALPHA)
-        pygame.draw.circle(self.surf, (255, 0, 0), (15, 15), 15)
+        self.radius = 15
+        self.diameter = self.radius*2
+        self.surf = pygame.Surface((self.diameter, self.diameter), pygame.SRCALPHA)
+        pygame.draw.circle(self.surf, (255, 0, 0), (self.radius, self.radius), self.radius)
         self.rect = self.surf.get_rect()
 
         # physics
@@ -43,7 +44,7 @@ class Player(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc # physics engine trick
 
         # sync rect and position
-        self.rect.midbottom = self.pos
+        self.rect.center = self.pos
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
