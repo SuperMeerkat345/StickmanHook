@@ -1,11 +1,20 @@
 import pygame
+import math
 
 class BouncePad(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h):
+    def __init__(self, x, y, w, h, rot):
         super().__init__()
-        self.surf = pygame.Surface((w, h))
-        self.surf.fill((125, 125, 0))
-        self.rect = self.surf.get_rect(topleft=(x, y))
+        # store real geometry
+        self.pos = pygame.math.Vector2(x, y)
+        self.width = w
+        self.height = h
+        self.angle = rot
+
+        # visual
+        base = pygame.Surface((w, h), pygame.SRCALPHA)
+        base.fill((125, 125, 0))
+        self.surf = pygame.transform.rotate(base, -rot)
+        self.rect = self.surf.get_rect(center=(x, y))
 
     def update(self):
         pass

@@ -1,4 +1,5 @@
 import pygame
+import math
 import utils.constants as constants
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
@@ -8,7 +9,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         
         # visual
-        self.surf = pygame.Surface((30, 30), pygame.SRCALPHA)
+        self.radius = 30
+        self.surf = pygame.Surface((self.radius, self.radius), pygame.SRCALPHA)
         pygame.draw.circle(self.surf, (255, 0, 0), (15, 15), 15)
         self.rect = self.surf.get_rect()
 
@@ -16,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(10, 10)
         self.vel = pygame.math.Vector2(0, 0)
         self.acc = pygame.math.Vector2(0, 0)
-
+        
         # world reference (auto-updated)
         self.all_sprites = all_sprites
         self.platforms = platforms
@@ -34,7 +36,7 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         # account for friction
-        self.acc.x += self.vel.x * -constants.FRICTION
+        #self.acc.x += self.vel.x * -constants.FRICTION
 
         # update velocity and position vectors
         self.vel += self.acc
@@ -43,21 +45,56 @@ class Player(pygame.sprite.Sprite):
         # sync rect and position
         self.rect.midbottom = self.pos
         
-    # need to improve
+    # you have no clue how much work went into ts
+    # hardest physics problem ive ever done...
     def resolve_collisions(self):
-        collisions = pygame.sprite.spritecollide(self, self.platforms, False)
-        if collisions:
+        for platform in self.platforms:
+            # step 0: rotate system to regular x,y plane
+            dist = self.pos - platform.pos
+            theta = platform.angle # degrees
+
+            # relative player position in new coordinate system
+            relative = dist.rotate(-theta) # negative angle since we are going backwards
+
+            # step 1: find closest pt on rectangle
+            closest_x = max(-platform.width/2, min(relative.x, platform.width/2)) # rect at (0, 0), player pos stored in relative vector
+            closest_y = max(-platform.height/2, min(relative.y, platform.height/2))
+
+            # step 2: check if collision
+            dx = relative.x - closest_x
+            dy = relative.y - closest_y
             
-            self.pos.y = collisions[0].rect.top + 1 # put on top of collision
-            self.vel.y = 0 # stop
+            # if the point is outisde the circle, no collision
+            # else, collision and we need to fix
+            if dx*dx + dy*dy >= self.radius*self.radius:
+                continue
+
+            # step 3: get normal line of reflection surface
+            normal_local = pygame.math.Vector2(dx, dy)
+
+            if normal_local.length() == 0: # exact center, just pick whichever side is closest
+                if abs(relative.x) > abs(relative.y):
+                    normal_local = pygame.math.Vector2(1 if relative.x > 0 else -1, 0)
+                else:
+                    normal_local = pygame.math.Vector2(0, 1 if relative.y > 0 else -1)
+            else:
+                normal_local = normal_local.normalize()
+
             
-            self.on_ground = True # back on ground
+            # step 4: calculate new velocity
+            # https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+            normal = normal_local.rotate(theta)
+            self.vel = self.vel.reflect(normal) * 0.8
             
 
-            #collision = collisions[0]
-            #if isinstance(collision, Platform):
-            #    pass
-            #elif isinstance(collision, BouncePad):
+            # step 5: resolve penetration
+            distance = pygame.math.Vector2(dx, dy).length()
+            penetration = self.radius - distance
+            self.pos += normal * penetration
+
+            break # exit after first collision, we aint fancy around here
+
+
 
     
     def process_input(self):

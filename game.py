@@ -21,13 +21,17 @@ platforms = pygame.sprite.Group()
 swings = pygame.sprite.Group()
 
 
-p1 = Platform(10, 400, 300, 50)
+p1 = BouncePad(300, 200, 300, 50, 0)
 all_sprites.add(p1)
 platforms.add(p1)
 
-b1 = BouncePad(300, 300, 100, 20)
+b1 = BouncePad(50, 300, 300, 50, -30)
 all_sprites.add(b1)
 platforms.add(b1)
+
+b2 = BouncePad(-10, 300, 300, 50, 90)
+all_sprites.add(b2)
+platforms.add(b2)
 
 P1 = Player(all_sprites, platforms, swings)
 all_sprites.add(P1)
