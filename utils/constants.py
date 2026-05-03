@@ -1,6 +1,6 @@
 # Window size
-WIDTH = 500
-HEIGHT = 500
+WIDTH = 1000
+HEIGHT = 1000
 
 # Window settings
 FPS = 60

@@ -33,7 +33,20 @@ class Player(pygame.sprite.Sprite):
 
         self.process_input() # check which keys are held to determine acceleration        
         self.move() # move based on new acceleration
-        self.resolve_collisions() # handle collisions
+
+        steps = int(self.vel.length() // self.radius) + 1
+        steps = max(1, min(steps, 30))  # clamp
+        print(steps)
+
+        step_vel = self.vel / steps
+
+        for _ in range(steps):
+            step_vel = self.vel / steps
+            self.pos += step_vel
+            self.resolve_collisions()
+
+        self.rect.center = self.pos
+        #self.resolve_collisions() # handle collisions
 
     def move(self):
         # account for friction
@@ -41,10 +54,10 @@ class Player(pygame.sprite.Sprite):
 
         # update velocity and position vectors
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc # physics engine trick
+        #self.pos += self.vel + 0.5 * self.acc # physics engine trick
 
         # sync rect and position
-        self.rect.center = self.pos
+        #self.rect.center = self.pos
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
@@ -85,13 +98,18 @@ class Player(pygame.sprite.Sprite):
             # step 4: calculate new velocity
             # https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
             normal = normal_local.rotate(theta)
-            self.vel = self.vel.reflect(normal) * 0.8
+
+            
+            if isinstance(platform, BouncePad):
+                self.vel = self.vel.reflect(normal) * 1.2
+            elif isinstance(platform, Platform):
+                self.vel = self.vel.reflect(normal) * 0.8
             
 
             # step 5: resolve penetration
             distance = pygame.math.Vector2(dx, dy).length()
             penetration = self.radius - distance
-            self.pos += normal * penetration
+            self.pos += normal * penetration * 1.01
 
             break # exit after first collision, we aint fancy around here
 
