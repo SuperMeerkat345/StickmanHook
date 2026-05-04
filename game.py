@@ -7,6 +7,7 @@ import utils.constants as constants
 from sprites.player import Player
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
+from sprites.swing import Swing
 
 #test push
 
@@ -22,6 +23,10 @@ pygame.display.set_caption("Game")
 all_sprites = pygame.sprite.Group()
 platforms = pygame.sprite.Group()
 swings = pygame.sprite.Group()
+
+# --- SWINGS ---
+swing1 = Swing(300, 300)
+swings.add(swing1)
 
 # --- BOUNDARIES (keep player inside) ---
 floor = Platform(500, 950, 1000, 50, 0)
