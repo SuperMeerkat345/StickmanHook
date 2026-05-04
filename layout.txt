@@ -1,5 +1,8 @@
 THIS IS THE LAYOUT OF THE PROJECT
 
+tut:
+https://coderslegacy.com/python/pygame-platformer-game-development/
+
 project/
 │
 ├── main.py
