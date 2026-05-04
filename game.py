@@ -9,6 +9,7 @@ from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
 
 pygame.init()
+clock = pygame.time.Clock()
 
 # setup window
 displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
@@ -78,8 +79,11 @@ while True:
             pygame.quit()
             sys.exit()
         
-    # background
+    # background + ui
     displaysurface.fill((0, 0, 255))
+    font = pygame.font.SysFont("Arial", 20)  # Use None for default font
+    text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {P1.vel}", True, (255, 255, 255))
+    displaysurface.blit(text_surface, (30, 30))
 
     # draw sprites and update sprites
     for entity in all_sprites:
@@ -88,4 +92,6 @@ while True:
 
     # re-render display
     pygame.display.update()
-    pygame.time.Clock().tick(constants.FPS) # limit loop to 60 fps
+    clock.tick(constants.FPS) # limit loop to 60 fps
+
+   

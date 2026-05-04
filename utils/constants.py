@@ -9,4 +9,4 @@ FPS = 60
 FRICTION = 0.12
 GRAVITY = 0.5
 ACCEL = 0.5 # horizontal acceleartion of player
-
+MAX_STEPS = 50 # maximum amount of steps for a collision

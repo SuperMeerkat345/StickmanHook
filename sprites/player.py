@@ -24,9 +24,6 @@ class Player(pygame.sprite.Sprite):
         self.all_sprites = all_sprites
         self.platforms = platforms
         self.swings = swings
-
-        # temp 
-        self.on_ground = False
     
     def update(self):
         self.acc = pygame.math.Vector2(0, constants.GRAVITY) # zero acceleration at start of frame
@@ -34,19 +31,19 @@ class Player(pygame.sprite.Sprite):
         self.process_input() # check which keys are held to determine acceleration        
         self.move() # move based on new acceleration
 
+        # designed to scale amount of steps checked per frame with velocity
         steps = int(self.vel.length() // self.radius) + 1
-        steps = max(1, min(steps, 30))  # clamp
-        print(steps)
+        steps = max(1, min(steps, constants.MAX_STEPS))  # clamp
 
         step_vel = self.vel / steps
 
         for _ in range(steps):
             step_vel = self.vel / steps
-            self.pos += step_vel
+            self.pos += step_vel # step forward
             self.resolve_collisions()
 
-        self.rect.center = self.pos
-        #self.resolve_collisions() # handle collisions
+        self.rect.center = self.pos # sync physics body and rendered 
+        
 
     def move(self):
         # account for friction
@@ -56,8 +53,6 @@ class Player(pygame.sprite.Sprite):
         self.vel += self.acc
         #self.pos += self.vel + 0.5 * self.acc # physics engine trick
 
-        # sync rect and position
-        #self.rect.center = self.pos
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
@@ -111,10 +106,7 @@ class Player(pygame.sprite.Sprite):
             penetration = self.radius - distance
             self.pos += normal * penetration * 1.01
 
-            break # exit after first collision, we aint fancy around here
-
-
-
+            #break # exit after first collision, we aint fancy around here
     
     def process_input(self):
         keys = pygame.key.get_pressed()
@@ -123,16 +115,6 @@ class Player(pygame.sprite.Sprite):
             self.acc.x -= constants.ACCEL
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.acc.x += constants.ACCEL
-        if keys[pygame.K_SPACE]:
-            self.jump()
 
-    # temp func for testing collisions
-    def jump(self):
-        # check if bro is standing before letting him jump
-        # he aint jesus gng
-        if self.on_ground:
-            self.vel.y = -15
-            self.on_ground = False # not on ground no more
-
-
+    
 
