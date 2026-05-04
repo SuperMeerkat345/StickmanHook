@@ -30,18 +30,15 @@ class Player(pygame.sprite.Sprite):
 
         self.process_input() # check which keys are held to determine acceleration        
         self.move() # move based on new acceleration
-
-        # designed to scale amount of steps checked per frame with velocity
-        steps = int(self.vel.length() // self.radius) + 1
-        steps = max(1, min(steps, constants.MAX_STEPS))  # clamp
-
-        step_vel = self.vel / steps
-
-        for _ in range(steps):
-            step_vel = self.vel / steps
-            self.pos += step_vel # step forward
-            self.resolve_collisions()
-
+        self.step() # step through the velocity vector for the frame in order to prevent collision
+        
+        # zero velocity if going too slow
+        if abs(self.vel.x) < 0.05:
+            self.vel.x = 0
+        if abs(self.vel.y) < 0.05:
+            self.vel.y = 0
+        
+        
         self.rect.center = self.pos # sync physics body and rendered 
         
 
@@ -52,6 +49,18 @@ class Player(pygame.sprite.Sprite):
         # update velocity and position vectors
         self.vel += self.acc
         #self.pos += self.vel + 0.5 * self.acc # physics engine trick
+
+    def step(self):
+        # designed to scale amount of steps checked per frame with velocity
+        steps = int(self.vel.length() // self.radius) + 1
+        steps = max(1, min(steps, constants.MAX_STEPS))  # clamp
+
+        step_vel = self.vel / steps
+
+        for _ in range(steps):
+            step_vel = self.vel / steps
+            self.pos += step_vel # step forward
+            self.resolve_collisions()
 
         
     # you have no clue how much work went into ts
@@ -96,7 +105,7 @@ class Player(pygame.sprite.Sprite):
 
             
             if isinstance(platform, BouncePad):
-                self.vel = self.vel.reflect(normal) * 1.2
+                self.vel = self.vel.reflect(normal) * 1.1
             elif isinstance(platform, Platform):
                 self.vel = self.vel.reflect(normal) * 0.8
             
