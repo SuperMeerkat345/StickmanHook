@@ -11,7 +11,7 @@ class Swing(pygame.sprite.Sprite):
         self.surf = pygame.Surface((self.diameter, self.diameter), pygame.SRCALPHA)
         self.color = (0, 255, 0)
         
-        pygame.draw.circle(self.surf, self.color, (self.radius, self.radius), self.radius)
+        pygame.draw.circle(self.surf, (0, 255, 0), (self.radius, self.radius), self.radius)
         self.rect = self.surf.get_rect(center=(self.pos.x, self.pos.y))
 
     def update(self):

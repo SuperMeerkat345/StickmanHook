@@ -8,6 +8,7 @@ from sprites.player import Player
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
 from sprites.swing import Swing
+from sprites.connector import Connector
 
 #test push
 
@@ -24,8 +25,10 @@ all_sprites = pygame.sprite.Group()
 platforms = pygame.sprite.Group()
 swings = pygame.sprite.Group()
 
+
 # --- SWINGS ---
 swing1 = Swing(300, 300)
+all_sprites.add(swing1)
 swings.add(swing1)
 
 # --- BOUNDARIES (keep player inside) ---
@@ -75,6 +78,10 @@ for p in [trick1, trick2]:
 P1 = Player(all_sprites, platforms, swings)
 P1.pos = pygame.math.Vector2(500, 100)
 all_sprites.add(P1)
+
+# --- CONNECTORS ---
+#connector1 = Connector(P1, swing1)
+#all_sprites.add(connector1)
 ## ENDINIT
 
 # game loop

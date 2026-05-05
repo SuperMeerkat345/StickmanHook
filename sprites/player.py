@@ -3,6 +3,7 @@ import math
 import utils.constants as constants
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
+from sprites.connector import Connector
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, all_sprites, platforms, swings):
@@ -24,6 +25,9 @@ class Player(pygame.sprite.Sprite):
         self.all_sprites = all_sprites
         self.platforms = platforms
         self.swings = swings
+
+        # connection
+        self.connection = None
     
     def update(self):
         self.acc = pygame.math.Vector2(0, constants.GRAVITY) # zero acceleration at start of frame
@@ -50,6 +54,7 @@ class Player(pygame.sprite.Sprite):
         self.vel += self.acc
         #self.pos += self.vel + 0.5 * self.acc # physics engine trick
 
+    # steps through the velocities per frame
     def step(self):
         # designed to scale amount of steps checked per frame with velocity
         steps = int(self.vel.length() // self.radius) + 1
@@ -61,7 +66,6 @@ class Player(pygame.sprite.Sprite):
             step_vel = self.vel / steps
             self.pos += step_vel # step forward
             self.resolve_collisions()
-
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
@@ -117,6 +121,22 @@ class Player(pygame.sprite.Sprite):
 
             #break # exit after first collision, we aint fancy around here
     
+    # connects to the nearest swing
+    def connect(self):
+        # if alr connected or no swings, exit
+        if self.connection or len(self.swings) == 0:
+            return
+        
+        # get swing with the lowest distance to the player
+        closest_swing = min(
+            self.swings, 
+            key=lambda swing: math.dist((self.pos.x, self.pos.y), (swing.pos.x, swing.pos.y))
+        )
+        
+        self.connection = Connector(self, closest_swing) # make the connection
+        self.all_sprites.add(self.connection) # add it to the world environment
+        
+    # processes key inputs
     def process_input(self):
         keys = pygame.key.get_pressed()
         
@@ -124,6 +144,13 @@ class Player(pygame.sprite.Sprite):
             self.acc.x -= constants.ACCEL
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.acc.x += constants.ACCEL
+        if keys[pygame.K_SPACE]:
+            self.connect()
+        elif self.connection: # if not pressing space, clear connection
+            self.all_sprites.remove(self.connection)
+            self.connection = None
+
+    
 
     
 
