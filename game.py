@@ -10,8 +10,6 @@ from sprites.bounce_pad import BouncePad
 from sprites.swing import Swing
 from sprites.connector import Connector
 
-#test push
-
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -32,10 +30,10 @@ all_sprites.add(swing1)
 swings.add(swing1)
 
 # --- BOUNDARIES (keep player inside) ---
-floor = Platform(500, 950, 1000, 50, 0)
-left_wall = Platform(0, 500, 50, 1000, 0)
-right_wall = Platform(1000, 500, 50, 1000, 0)
-ceiling = Platform(500, 0, 1000, 50, 0)
+floor = Platform(constants.WIDTH/2, constants.HEIGHT, constants.WIDTH, 50, 0) # x, y, w, h, rot
+left_wall = Platform(0, constants.HEIGHT/2, 50, 1000, 0)
+right_wall = Platform(constants.WIDTH, constants.HEIGHT/2, 50, 1000, 0)
+ceiling = Platform(constants.WIDTH/2, 0, constants.WIDTH, 50, 0)
 
 for p in [floor, left_wall, right_wall, ceiling]:
     all_sprites.add(p)

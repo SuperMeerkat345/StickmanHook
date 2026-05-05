@@ -1,7 +1,17 @@
-# Window size
-WIDTH = 1000
-HEIGHT = 1000
+import tkinter as tk
 
+root = tk.Tk()
+# Get width and height in pixels
+WIDTH = root.winfo_screenwidth()
+HEIGHT = root.winfo_screenheight()
+
+
+# Window size
+# WIDTH = 1000
+# HEIGHT = 1000
+
+print(f"Screen Size: {WIDTH} x {HEIGHT} pixels")
+root.destroy()
 # Window settings
 FPS = 60
 
