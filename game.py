@@ -60,7 +60,7 @@ all_sprites.add(launcher)
 platforms.add(launcher)
 
 # --- MID AIR PLATFORM ---
-mid_platform = Platform(500, 350, 300, 30, 30)
+mid_platform = Platform(500, 350, 300, 30, 0)
 all_sprites.add(mid_platform)
 platforms.add(mid_platform)
 
