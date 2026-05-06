@@ -31,8 +31,8 @@ swings.add(swing1)
 
 # --- BOUNDARIES (keep player inside) ---
 floor = Platform(constants.WIDTH/2, constants.HEIGHT, constants.WIDTH, 50, 0) # x, y, w, h, rot
-left_wall = Platform(0, constants.HEIGHT/2, 50, 1000, 0)
-right_wall = Platform(constants.WIDTH, constants.HEIGHT/2, 50, 1000, 0)
+left_wall = Platform(0, constants.HEIGHT/2, 50, constants.HEIGHT, 0)
+right_wall = Platform(constants.WIDTH, constants.HEIGHT/2, 50, constants.HEIGHT, 0)
 ceiling = Platform(constants.WIDTH/2, 0, constants.WIDTH, 50, 0)
 
 for p in [floor, left_wall, right_wall, ceiling]:
