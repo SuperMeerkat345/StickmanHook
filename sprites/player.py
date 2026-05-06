@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
         # zero velocity if going too slow
         if abs(self.vel.x) < 0.05:
             self.vel.x = 0
-        if abs(self.vel.y) < 0.05:
+        if abs(self.vel.y) < 0.3:
             self.vel.y = 0
         
         
@@ -66,6 +66,7 @@ class Player(pygame.sprite.Sprite):
             step_vel = self.vel / steps
             self.pos += step_vel # step forward
             self.resolve_collisions()
+            self.project_velocity()
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
@@ -112,7 +113,6 @@ class Player(pygame.sprite.Sprite):
                 self.vel = self.vel.reflect(normal) * 1.1
             elif isinstance(platform, Platform):
                 self.vel = self.vel.reflect(normal) * 0.8
-            
 
             # step 5: resolve penetration
             distance = pygame.math.Vector2(dx, dy).length()
@@ -135,7 +135,22 @@ class Player(pygame.sprite.Sprite):
         
         self.connection = Connector(self, closest_swing) # make the connection
         self.all_sprites.add(self.connection) # add it to the world environment
+    
+    def project_velocity(self):
+        # check if attached to rope
+        if self.connection is None: # not connected
+            return
         
+        # vector of radius of circle
+        radius_vector = pygame.math.Vector2(
+            self.pos.x-self.connection.obj2.pos.x, 
+            self.pos.y-self.connection.obj2.pos.y
+        )
+        perpendicular_vector = radius_vector.rotate(-90)
+
+        # project players velocity vector onto perpendicular vector
+        self.vel = self.vel.project(perpendicular_vector)
+
     # processes key inputs
     def process_input(self):
         keys = pygame.key.get_pressed()

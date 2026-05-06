@@ -2,6 +2,7 @@
 import pygame
 import sys
 
+
 # local imports
 import utils.constants as constants
 from sprites.player import Player
@@ -14,7 +15,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # setup window
-displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
+displaysurface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("Game")
 
 ## INIT CODE
