@@ -15,9 +15,14 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # setup window
-displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
-pygame.display.toggle_fullscreen()
+
+# Design resolution (internal game logic runs here)
+VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 1920, 1080
+virtual_screen = pygame.Surface((VIRTUAL_WIDTH, VIRTUAL_HEIGHT))
+
+displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
+
 ## INIT CODE
 # GROUPS
 all_sprites = pygame.sprite.Group()
@@ -31,10 +36,10 @@ all_sprites.add(swing1)
 swings.add(swing1)
 
 # --- BOUNDARIES (keep player inside) ---
-floor = Platform(constants.WIDTH/2, constants.HEIGHT, constants.WIDTH, 50, 0) # x, y, w, h, rot
-left_wall = Platform(0, constants.HEIGHT/2, 50, constants.HEIGHT, 0)
-right_wall = Platform(constants.WIDTH, constants.HEIGHT/2, 50, constants.HEIGHT, 0)
-ceiling = Platform(constants.WIDTH/2, 0, constants.WIDTH, 50, 0)
+floor = Platform(VIRTUAL_WIDTH/2, VIRTUAL_HEIGHT, VIRTUAL_WIDTH, 50, 0) # x, y, w, h, rot
+left_wall = Platform(0, VIRTUAL_HEIGHT/2, 50, VIRTUAL_HEIGHT, 0)
+right_wall = Platform(VIRTUAL_WIDTH, VIRTUAL_HEIGHT/2, 50, VIRTUAL_HEIGHT, 0)
+ceiling = Platform(VIRTUAL_WIDTH/2, 0, VIRTUAL_WIDTH, 50, 0)
 
 for p in [floor, left_wall, right_wall, ceiling]:
     all_sprites.add(p)
@@ -97,16 +102,22 @@ while True:
             sys.exit()
         
     # background + ui
-    displaysurface.fill((0, 0, 255))
+    virtual_screen.fill((0, 0, 255))
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {P1.vel}", True, (255, 255, 255))
-    displaysurface.blit(text_surface, (30, 30))
+
+    
 
     # draw sprites and update sprites
     for entity in all_sprites:
-        displaysurface.blit(entity.surf, entity.rect)
+        virtual_screen.blit(entity.surf, entity.rect)
         entity.update()
+    
 
+    #scale screen
+    scaled_screen = pygame.transform.scale(virtual_screen, (constants.WIDTH, constants.HEIGHT))
+    displaysurface.blit(scaled_screen, (0, 0))
+    pygame.display.flip()
     # re-render display
     pygame.display.update()
     clock.tick(constants.FPS) # limit loop to 60 fps
