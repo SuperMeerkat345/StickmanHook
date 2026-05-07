@@ -1,3 +1,5 @@
 1. Even with substepping, player is still clipping out
 2. If player is standing on ground, hard to move around, probably becuase reflecting too much
 3. Bounce pads should be adding to velocity not multiplying by a scalar
+
+4. connector doesn't scale properly

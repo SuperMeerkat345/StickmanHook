@@ -106,8 +106,6 @@ while True:
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {P1.vel}", True, (255, 255, 255))
 
-    
-
     # draw sprites and update sprites
     for entity in all_sprites:
         virtual_screen.blit(entity.surf, entity.rect)
@@ -117,6 +115,8 @@ while True:
     #scale screen
     scaled_screen = pygame.transform.scale(virtual_screen, (constants.WIDTH, constants.HEIGHT))
     displaysurface.blit(scaled_screen, (0, 0))
+    displaysurface.blit(text_surface, (100, 100))
+    
     pygame.display.flip()
     # re-render display
     pygame.display.update()
