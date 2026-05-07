@@ -15,9 +15,9 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # setup window
-displaysurface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
 pygame.display.set_caption("Game")
-
+pygame.display.toggle_fullscreen()
 ## INIT CODE
 # GROUPS
 all_sprites = pygame.sprite.Group()
@@ -87,6 +87,10 @@ all_sprites.add(P1)
 while True:
     # handle events
     for event in pygame.event.get():
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_q]:
+            pygame.display.toggle_fullscreen()
+            pygame.display.set_mode((constants.WIDTH/4, constants.HEIGHT/4))
         # close game logic
         if event.type == pygame.QUIT:
             pygame.quit()
