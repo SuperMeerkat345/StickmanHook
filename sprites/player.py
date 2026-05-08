@@ -1,5 +1,6 @@
 import pygame
 import math
+from time import sleep
 import utils.constants as constants
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
@@ -33,9 +34,10 @@ class Player(pygame.sprite.Sprite):
         self.acc = pygame.math.Vector2(0, constants.GRAVITY) # zero acceleration at start of frame
 
         self.process_input() # check which keys are held to determine acceleration        
-        self.move() # move based on new acceleration
+       
         self.step() # step through the velocity vector for the frame in order to prevent collision
-        
+        self.move() # move based on new acceleration
+
         # zero velocity if going too slow
         if abs(self.vel.x) < 0.05:
             self.vel.x = 0
@@ -66,7 +68,7 @@ class Player(pygame.sprite.Sprite):
             step_vel = self.vel / steps
             self.pos += step_vel # step forward
             self.resolve_collisions()
-            self.project_velocity()
+            self.project_velocity(steps)
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
@@ -117,7 +119,7 @@ class Player(pygame.sprite.Sprite):
             # step 5: resolve penetration
             distance = pygame.math.Vector2(dx, dy).length()
             penetration = self.radius - distance
-            self.pos += normal * penetration * 1.01
+            self.pos += normal * penetration *1.2
 
             #break # exit after first collision, we aint fancy around here
     
@@ -135,21 +137,28 @@ class Player(pygame.sprite.Sprite):
         
         self.connection = Connector(self, closest_swing) # make the connection
         self.all_sprites.add(self.connection) # add it to the world environment
+
+        # --- LOCK THE LENGTH HERE ---
+        self.active_rope_length = (self.pos - closest_swing.pos).length()
+        
+        self.all_sprites.add(self.connection)
     
-    def project_velocity(self):
-        # check if attached to rope
-        if self.connection is None: # not connected
+    def project_velocity(self, steps):
+        if self.connection is None:
             return
         
-        # vector of radius of circle
-        radius_vector = pygame.math.Vector2(
-            self.pos.x-self.connection.obj2.pos.x, 
-            self.pos.y-self.connection.obj2.pos.y
-        )
-        perpendicular_vector = radius_vector.rotate(-90)
+        anchor_pos = self.connection.obj2.pos
+        radius_vector = self.pos - anchor_pos
 
-        # project players velocity vector onto perpendicular vector
-        self.vel = self.vel.project(perpendicular_vector)
+        # 1. Fix Velocity (The Tangent)
+        if radius_vector.length_squared() > 0:
+            perpendicular_vector = radius_vector.rotate(90)
+            self.vel = self.vel.project(perpendicular_vector) / steps
+
+            # 2. Fix Position (The Snap)
+            # Use the LOCKED length, not the current distance!
+            self.pos = anchor_pos + (radius_vector.normalize() * self.active_rope_length)
+
 
     # processes key inputs
     def process_input(self):
