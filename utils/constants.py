@@ -5,6 +5,7 @@ root = tk.Tk()
 WIDTH = root.winfo_screenwidth()
 HEIGHT = root.winfo_screenheight()
 
+VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 1920, 1080
 
 # Window size
 # WIDTH = 1000

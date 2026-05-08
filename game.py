@@ -18,8 +18,8 @@ clock = pygame.time.Clock()
 pygame.display.set_caption("Game")
 
 # Design resolution (internal game logic runs here)
-VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 1920, 1080
-virtual_screen = pygame.Surface((VIRTUAL_WIDTH, VIRTUAL_HEIGHT))
+
+virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT))
 
 displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
 
@@ -32,14 +32,17 @@ swings = pygame.sprite.Group()
 
 # --- SWINGS ---
 swing1 = Swing(300, 300)
+swing2 = Swing(2000, 300)
 all_sprites.add(swing1)
+all_sprites.add(swing2)
 swings.add(swing1)
+swings.add(swing2)
 
 # --- BOUNDARIES (keep player inside) ---
-floor = Platform(VIRTUAL_WIDTH/2, VIRTUAL_HEIGHT, VIRTUAL_WIDTH, 50, 0) # x, y, w, h, rot
-left_wall = Platform(0, VIRTUAL_HEIGHT/2, 50, VIRTUAL_HEIGHT, 0)
-right_wall = Platform(VIRTUAL_WIDTH, VIRTUAL_HEIGHT/2, 50, VIRTUAL_HEIGHT, 0)
-ceiling = Platform(VIRTUAL_WIDTH/2, 0, VIRTUAL_WIDTH, 50, 0)
+floor = Platform(constants.VIRTUAL_WIDTH/2, constants.VIRTUAL_HEIGHT, constants.VIRTUAL_WIDTH, 50, 0) # x, y, w, h, rot
+left_wall = Platform(0, constants.VIRTUAL_HEIGHT/2, 50, constants.VIRTUAL_HEIGHT, 0)
+right_wall = Platform(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT/2, 50, constants.VIRTUAL_HEIGHT, 0)
+ceiling = Platform(constants.VIRTUAL_WIDTH/2, 0, constants.VIRTUAL_WIDTH, 50, 0)
 
 for p in [floor, left_wall, right_wall, ceiling]:
     all_sprites.add(p)
@@ -110,12 +113,13 @@ while True:
     for entity in all_sprites:
         virtual_screen.blit(entity.surf, entity.rect)
         entity.update()
-    
+        
+    virtual_screen.blit(text_surface, (70, 70))
 
     #scale screen
     scaled_screen = pygame.transform.scale(virtual_screen, (constants.WIDTH, constants.HEIGHT))
     displaysurface.blit(scaled_screen, (0, 0))
-    displaysurface.blit(text_surface, (100, 100))
+    
     
     pygame.display.flip()
     # re-render display

@@ -4,7 +4,7 @@ import utils.constants as constants
 class Connector(pygame.sprite.Sprite):
     def __init__(self, obj1, obj2):
         super().__init__()
-        self.surf = pygame.Surface((constants.WIDTH, constants.HEIGHT), pygame.SRCALPHA)
+        self.surf = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT), pygame.SRCALPHA)
         self.rect = self.surf.get_rect()
 
         self.obj1 = obj1
