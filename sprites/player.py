@@ -21,6 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(10, 10)
         self.vel = pygame.math.Vector2(0, 0)
         self.acc = pygame.math.Vector2(0, 0)
+        self.steps = 1 # number of simulations to run per frame
         
         # world reference (auto-updated)
         self.all_sprites = all_sprites
@@ -53,17 +54,17 @@ class Player(pygame.sprite.Sprite):
     # steps through the velocities per frame
     def step(self):
         # designed to scale amount of steps checked per frame with velocity
-        steps = int(self.vel.length() // self.radius) + 1
-        steps = max(20, min(steps, constants.MAX_STEPS))  # clamp
+        self.steps = int(self.vel.length() // self.radius) + 1
+        self.steps = max(1, min(self.steps, constants.MAX_STEPS))  # clamp
 
-        step_vel = self.vel / steps
+        step_vel = self.vel / self.steps
 
-        for _ in range(steps):
+        for _ in range(self.steps):
             if not self.connection:
-                step_vel = self.vel / steps
+                step_vel = self.vel / self.steps
                 self.pos += step_vel # step forward
             else: # connected
-                self.project_velocity(steps)
+                self.project_velocity()
 
             self.resolve_collisions()
             
@@ -131,6 +132,7 @@ class Player(pygame.sprite.Sprite):
         if self.connection or len(self.swings) == 0:
             return
         
+
         # get swing with the lowest distance to the player
         closest_swing = min(
             self.swings, 
@@ -141,11 +143,11 @@ class Player(pygame.sprite.Sprite):
         self.all_sprites.add(self.connection) # add it to the world environment
 
         # --- LOCK THE LENGTH HERE ---
-        self.active_rope_length = (self.pos - closest_swing.pos).length()
+        self.active_rope_length = (self.pos - closest_swing.pos).length() *0.9
         
         self.all_sprites.add(self.connection)
     
-    def project_velocity(self, steps):
+    def project_velocity(self):
         if self.connection is None:
             return
         
@@ -159,12 +161,15 @@ class Player(pygame.sprite.Sprite):
         perpendicular_vector = radius_vector.rotate(90)
         self.vel = self.vel.project(perpendicular_vector) # psuedo velocity vector
 
-        # step 2: check direction of rotation
+        # step 2: move player towards the anchor
+        #self.pos += radius_vector.rotate(180)
+
+        # step 3: check direction of rotation
         direction = 1 if self.vel.dot(perpendicular_vector) > 0 else -1
 
-        # step 3: snap position
+        # step 4: snap position
         # s = r*theta (where theta in rad)
-        theta = (self.vel.length() / steps) / radius_length
+        theta = (self.vel.length() / self.steps) / radius_length
         theta = math.degrees(theta) * direction
 
         # anchor position summed with radius vector which is clamped to the constant rope length
