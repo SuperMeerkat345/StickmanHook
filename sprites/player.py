@@ -31,12 +31,15 @@ class Player(pygame.sprite.Sprite):
         self.connection = None
     
     def update(self):
+        # step 0: calculate accel
         self.acc = pygame.math.Vector2(0, constants.GRAVITY) # zero acceleration at start of frame
-
-        self.process_input() # check which keys are held to determine acceleration        
+        self.process_input() # check which keys are held to determine acceleration (DEBUG)    
        
+        # step 1: apply accel to velocity
+        self.vel += self.acc
+
+        # step 2: using the calculated velocity, step through the movements
         self.step() # step through the velocity vector for the frame in order to prevent collision
-        self.move() # move based on new acceleration
 
         # zero velocity if going too slow
         if abs(self.vel.x) < 0.05:
@@ -46,29 +49,24 @@ class Player(pygame.sprite.Sprite):
         
         
         self.rect.center = self.pos # sync physics body and rendered 
-        
-
-    def move(self):
-        # account for friction
-        #self.acc.x += self.vel.x * -constants.FRICTION
-
-        # update velocity and position vectors
-        self.vel += self.acc
-        #self.pos += self.vel + 0.5 * self.acc # physics engine trick
 
     # steps through the velocities per frame
     def step(self):
         # designed to scale amount of steps checked per frame with velocity
         steps = int(self.vel.length() // self.radius) + 1
-        steps = max(1, min(steps, constants.MAX_STEPS))  # clamp
+        steps = max(20, min(steps, constants.MAX_STEPS))  # clamp
 
         step_vel = self.vel / steps
 
         for _ in range(steps):
-            step_vel = self.vel / steps
-            self.pos += step_vel # step forward
+            if not self.connection:
+                step_vel = self.vel / steps
+                self.pos += step_vel # step forward
+            else: # connected
+                self.project_velocity(steps)
+
             self.resolve_collisions()
-            self.project_velocity(steps)
+            
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
@@ -113,13 +111,17 @@ class Player(pygame.sprite.Sprite):
             
             if isinstance(platform, BouncePad):
                 self.vel = self.vel.reflect(normal) * 1.1
+
+                # set a minimum velocity to have after a bounce
+                if self.vel.length() < constants.MIN_BOUNCE_SPEED:
+                    self.vel = (self.vel / self.vel.length()) * constants.MIN_BOUNCE_SPEED
             elif isinstance(platform, Platform):
                 self.vel = self.vel.reflect(normal) * 0.8
 
             # step 5: resolve penetration
             distance = pygame.math.Vector2(dx, dy).length()
             penetration = self.radius - distance
-            self.pos += normal * penetration *1.2
+            self.pos += normal * penetration *1.01
 
             #break # exit after first collision, we aint fancy around here
     
@@ -149,15 +151,26 @@ class Player(pygame.sprite.Sprite):
         
         anchor_pos = self.connection.obj2.pos
         radius_vector = self.pos - anchor_pos
+        radius_length = radius_vector.length()
 
-        # 1. Fix Velocity (The Tangent)
-        if radius_vector.length_squared() > 0:
-            perpendicular_vector = radius_vector.rotate(90)
-            self.vel = self.vel.project(perpendicular_vector) / steps
+        # step 1: check if inside the anchor
+        if radius_length == 0:
+            return
+        perpendicular_vector = radius_vector.rotate(90)
+        self.vel = self.vel.project(perpendicular_vector) # psuedo velocity vector
 
-            # 2. Fix Position (The Snap)
-            # Use the LOCKED length, not the current distance!
-            self.pos = anchor_pos + (radius_vector.normalize() * self.active_rope_length)
+        # step 2: check direction of rotation
+        direction = 1 if self.vel.dot(perpendicular_vector) > 0 else -1
+
+        # step 3: snap position
+        # s = r*theta (where theta in rad)
+        theta = (self.vel.length() / steps) / radius_length
+        theta = math.degrees(theta) * direction
+
+        # anchor position summed with radius vector which is clamped to the constant rope length
+        self.pos = anchor_pos + (radius_vector.normalize()*self.active_rope_length).rotate(theta)
+        
+
 
 
     # processes key inputs

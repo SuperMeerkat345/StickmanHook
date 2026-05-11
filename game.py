@@ -96,7 +96,7 @@ while True:
     # handle events
     for event in pygame.event.get():
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_q]:
+        if keys[pygame.K_w]:
             pygame.display.toggle_fullscreen()
             pygame.display.set_mode((constants.WIDTH/4, constants.HEIGHT/4))
         # close game logic

@@ -1,2 +1,2 @@
 1. If player is standing on ground, hard to move around, probably becuase reflecting too much
-2. Bounce pads should be adding to velocity not multiplying by a scalar
+2. Bounce pads should have a minimum bounce, make minimum velocity magnitude when reflecting off
