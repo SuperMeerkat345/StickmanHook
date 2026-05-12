@@ -1,6 +1,5 @@
 import pygame
 import math
-from time import sleep
 import utils.constants as constants
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
@@ -111,18 +110,25 @@ class Player(pygame.sprite.Sprite):
 
             
             if isinstance(platform, BouncePad):
+                # add to velocity
                 self.vel = self.vel.reflect(normal) * 1.1
 
                 # set a minimum velocity to have after a bounce
                 if self.vel.length() < constants.MIN_BOUNCE_SPEED:
                     self.vel = (self.vel / self.vel.length()) * constants.MIN_BOUNCE_SPEED
             elif isinstance(platform, Platform):
-                self.vel = self.vel.reflect(normal) * 0.8
+                normal_dot = self.vel.dot(normal)  # how fast we're moving into the surface
+                if abs(normal_dot) < constants.REST_THRESHOLD:
+                    # cancel only the into-surface component, no damping
+                    self.vel -= normal_dot * normal
+                else:
+                    #reflect with damping
+                    self.vel = self.vel.reflect(normal) * 0.8
 
             # step 5: resolve penetration
             distance = pygame.math.Vector2(dx, dy).length()
             penetration = self.radius - distance
-            self.pos += normal * penetration *1.01
+            self.pos += normal * (penetration * 1.01)
 
             #break # exit after first collision, we aint fancy around here
     
@@ -144,8 +150,6 @@ class Player(pygame.sprite.Sprite):
 
         # --- LOCK THE LENGTH HERE ---
         self.active_rope_length = (self.pos - closest_swing.pos).length() *0.9
-        
-        self.all_sprites.add(self.connection)
     
     def project_velocity(self):
         if self.connection is None:

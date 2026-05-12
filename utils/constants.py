@@ -17,8 +17,9 @@ root.destroy()
 FPS = 60
 
 # Physics
-FRICTION = 0.12
+FRICTION = 0.12 # currently unused
 GRAVITY = 0.5
 ACCEL = 0.5 # horizontal acceleartion of player
 MAX_STEPS = 50 # maximum amount of steps for a collision
 MIN_BOUNCE_SPEED = 5 # minimum bounce from bounce pad
+REST_THRESHOLD = 2 # when to rest on platforms
