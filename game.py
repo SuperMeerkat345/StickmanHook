@@ -114,12 +114,12 @@ while True:
         virtual_screen.blit(entity.surf, entity.rect)
         entity.update()
         
-    virtual_screen.blit(text_surface, (70, 70))
+    
 
     #scale screen
     scaled_screen = pygame.transform.scale(virtual_screen, (constants.WIDTH, constants.HEIGHT))
     displaysurface.blit(scaled_screen, (0, 0))
-    
+    displaysurface.blit(text_surface, (70, 70))
     
     pygame.display.flip()
     # re-render display
