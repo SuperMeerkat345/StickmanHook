@@ -5,6 +5,8 @@ import sys
 
 # local imports
 import utils.constants as constants
+from utils.camera import Camera
+
 from sprites.player import Player
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
@@ -24,6 +26,9 @@ virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIG
 displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
 
 ## INIT CODE
+# CAMERA
+camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
+
 # GROUPS
 all_sprites = pygame.sprite.Group()
 platforms = pygame.sprite.Group()
@@ -99,7 +104,7 @@ while True:
         if keys[pygame.K_w]:
             pygame.display.toggle_fullscreen()
             pygame.display.set_mode((constants.WIDTH/4, constants.HEIGHT/4))
-        # close game logic
+        # close game log
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
@@ -110,8 +115,9 @@ while True:
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {P1.vel}", True, (255, 255, 255))
 
     # draw sprites and update sprites
+    camera.update(P1) # follow player with cam
     for entity in all_sprites:
-        virtual_screen.blit(entity.surf, entity.rect)
+        virtual_screen.blit(entity.surf, camera.apply(entity.rect))
         entity.update()
         
     

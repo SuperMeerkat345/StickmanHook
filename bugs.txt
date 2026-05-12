@@ -1,2 +1,0 @@
-1. If player is standing on ground, hard to move around, probably becuase reflecting too much
-2. reflecting too fast when brushing against bounce pad while on rope, need it to be stricter
