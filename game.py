@@ -5,9 +5,11 @@ import sys
 
 # local imports
 import utils.constants as constants
+import utils.functions as funcs
 from sprites.player import Player
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
+import assets
 from sprites.swing import Swing
 from sprites.connector import Connector
 
@@ -22,6 +24,10 @@ pygame.display.set_caption("Game")
 virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT))
 
 displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
+
+funcs.play("./assets/audio/SmellsLikeTeamSpirit.mp3")
+funcs.queue("./assets/audio/time_for_adventure.mp3")
+
 
 ## INIT CODE
 # GROUPS
