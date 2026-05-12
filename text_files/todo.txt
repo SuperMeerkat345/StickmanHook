@@ -1,0 +1,3 @@
+1. Add level implementation which takes from scenes and makes it easy to add levels
+2. camera
+3. implement working version of the snap?
