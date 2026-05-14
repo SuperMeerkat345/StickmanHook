@@ -52,20 +52,26 @@ class Player(pygame.sprite.Sprite):
 
     # steps through the velocities per frame
     def step(self):
-        # designed to scale amount of steps checked per frame with velocity
         self.steps = int(self.vel.length() // self.radius) + 1
-        self.steps = max(1, min(self.steps, constants.MAX_STEPS))  # clamp
-
-        step_vel = self.vel / self.steps
+        self.steps = max(1, min(self.steps, constants.MAX_STEPS))
 
         for _ in range(self.steps):
-            if not self.connection:
-                step_vel = self.vel / self.steps
-                self.pos += step_vel # step forward
-            else: # connected
-                self.project_velocity()
-
+            if self.connection:
+                self.project_velocity() # arc
+            else:
+                self.pos += self.vel / self.steps # normal movement
+            
+            # always res
             self.resolve_collisions()
+            
+            # reconstrain
+            if self.connection:
+                anchor_pos = self.connection.obj2.pos
+                diff = self.pos - anchor_pos
+                if diff.length() > 0:
+                    self.pos = anchor_pos + diff.normalize() * self.active_rope_length
+
+            
             
         
     # you have no clue how much work went into ts
@@ -108,10 +114,19 @@ class Player(pygame.sprite.Sprite):
             # https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
             normal = normal_local.rotate(theta)
 
+            bounce_mult = 1
+            direction = 1
+
+            match type(platform).__name__:
+                case "BouncePad":
+                    bounce_mult = 1.1
+                case "Platform":
+                    bounce_mult = 0.8
+
             
             if isinstance(platform, BouncePad):
                 # add to velocity
-                self.vel = self.vel.reflect(normal) * 1.1
+                self.vel = self.vel.reflect(normal) * bounce_mult
 
                 # set a minimum velocity to have after a bounce
                 if self.vel.length() < constants.MIN_BOUNCE_SPEED:
@@ -123,15 +138,28 @@ class Player(pygame.sprite.Sprite):
                     self.vel -= normal_dot * normal
                 else:
                     #reflect with damping
-                    self.vel = self.vel.reflect(normal) * 0.8
+                    self.vel = self.vel.reflect(normal) * bounce_mult
 
             # step 5: resolve penetration
             distance = pygame.math.Vector2(dx, dy).length()
             penetration = self.radius - distance
             self.pos += normal * (penetration * 1.01)
 
-            #break # exit after first collision, we aint fancy around here
     
+    # checks if there is a collision at a specific position
+    # see resolve_collision for proper documentation
+    def is_collision(self, player_pos):
+        for platform in self.platforms:
+            dist = player_pos - platform.pos
+            relative = dist.rotate(-platform.angle)
+            closest_x = max(-platform.width/2, min(relative.x, platform.width/2))
+            closest_y = max(-platform.height/2, min(relative.y, platform.height/2))
+            dx, dy = relative.x - closest_x, relative.y - closest_y
+            
+            if dx*dx + dy*dy < self.radius*self.radius:
+                return platform 
+        return False
+
     # connects to the nearest swing
     def connect(self):
         # if alr connected or no swings, exit
@@ -177,8 +205,22 @@ class Player(pygame.sprite.Sprite):
         theta = math.degrees(theta) * direction
 
         # anchor position summed with radius vector which is clamped to the constant rope length
-        self.pos = anchor_pos + (radius_vector.normalize()*self.active_rope_length).rotate(theta)
+        new_pos = anchor_pos + (radius_vector.normalize()*self.active_rope_length).rotate(theta)
         
+        # step 5: check if this is a valid new position, if not reverse velocity
+        col = self.is_collision(new_pos)
+        bounce_mult = 1
+        match type(col).__name__:
+                case "BouncePad":
+                    bounce_mult = 1.1
+                case "Platform":
+                    bounce_mult = 0.8
+
+        if col: # there IS a collision
+            self.vel *= -1*bounce_mult # adjust velocity for this change
+            self.pos = anchor_pos + (radius_vector.normalize()*self.active_rope_length).rotate(-theta) # rotate in opposite dir
+        else: # no colliison
+            self.pos = new_pos
 
 
 
