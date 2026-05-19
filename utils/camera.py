@@ -18,4 +18,11 @@ class Camera:
     def apply(self, rect):
         # dont apply vertical offset for now...
         return rect.move(-self.offset.x, 0) #rect.move(-self.offset.x, -self.offset.y)
+
+    # applies offset to a position vector
+    def apply_pos(self, pos):
+        return (
+            pos.x - self.offset.x,
+            pos.y
+        )
     

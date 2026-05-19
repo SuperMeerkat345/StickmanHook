@@ -1,0 +1,68 @@
+{
+  "name": "Level 1",
+
+  "player_spawn": {
+    "x": 500,
+    "y": 100
+  },
+
+  "objects": [
+
+    {
+      "type": "platform",
+      "x": 500,
+      "y": 350,
+      "width": 300,
+      "height": 30,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 500,
+      "y": 800,
+      "width": 400,
+      "height": 40,
+      "rotation": 0,
+      "bounce_strength": 1.1
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 250,
+      "y": 650,
+      "width": 300,
+      "height": 40,
+      "rotation": 30,
+      "bounce_strength": 1.1
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 750,
+      "y": 650,
+      "width": 300,
+      "height": 40,
+      "rotation": -30,
+      "bounce_strength": 1.1
+    },
+
+    {
+      "type": "swing",
+      "x": 0,
+      "y": 300
+    },
+
+    {
+      "type": "swing",
+      "x": 2000,
+      "y": 300
+    },
+
+    {
+      "type": "swing",
+      "x": 4000,
+      "y": 300
+    }
+  ]
+}

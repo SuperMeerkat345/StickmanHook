@@ -1,6 +1,7 @@
 import pygame
 import math
 import utils.constants as constants
+import utils.audio as audio
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
 from sprites.connector import Connector
@@ -26,11 +27,13 @@ class Player(pygame.sprite.Sprite):
         self.all_sprites = all_sprites
         self.platforms = platforms
         self.swings = swings
-
+    
         # connection
         self.connection = None
     
     def update(self):
+        self.check_death()
+
         # step 0: calculate accel
         self.acc = pygame.math.Vector2(0, constants.GRAVITY) # zero acceleration at start of frame
         self.process_input() # check which keys are held to determine acceleration (DEBUG)    
@@ -66,13 +69,11 @@ class Player(pygame.sprite.Sprite):
             
             # reconstrain
             if self.connection:
-                anchor_pos = self.connection.obj2.pos
+                anchor_pos = self.connection.pos
                 diff = self.pos - anchor_pos
                 if diff.length() > 0:
                     self.pos = anchor_pos + diff.normalize() * self.active_rope_length
-
-            
-            
+        
         
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
@@ -173,17 +174,16 @@ class Player(pygame.sprite.Sprite):
             key=lambda swing: math.dist((self.pos.x, self.pos.y), (swing.pos.x, swing.pos.y))
         )
         
-        self.connection = Connector(self, closest_swing) # make the connection
-        self.all_sprites.add(self.connection) # add it to the world environment
+        self.connection = closest_swing # make the connection
 
-        # --- LOCK THE LENGTH HERE ---
+        # savae length as constant
         self.active_rope_length = (self.pos - closest_swing.pos).length() *0.9
     
     def project_velocity(self):
         if self.connection is None:
             return
         
-        anchor_pos = self.connection.obj2.pos
+        anchor_pos = self.connection.pos
         radius_vector = self.pos - anchor_pos
         radius_length = radius_vector.length()
 
@@ -222,7 +222,13 @@ class Player(pygame.sprite.Sprite):
         else: # no colliison
             self.pos = new_pos
 
-
+    def check_death(self):
+        if not self.connection and self.pos.y > 2000:
+            audio.play("./assets/audio/scream.mp3")
+            self.pos = pygame.math.Vector2(500, 100)
+            self.vel = pygame.math.Vector2(0, 0)
+        
+        
 
     # processes key inputs
     def process_input(self):
@@ -235,7 +241,6 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE]:
             self.connect()
         elif self.connection: # if not pressing space, clear connection
-            self.all_sprites.remove(self.connection)
             self.connection = None
 
     
