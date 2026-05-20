@@ -40,8 +40,7 @@ class Player(pygame.sprite.Sprite):
         self.process_input() # check which keys are held to determine acceleration (DEBUG)    
        
         # step 1: apply accel to velocity
-        if constants.pause:
-            self.vel += self.acc
+        self.vel += self.acc
 
         # step 2: using the calculated velocity, step through the movements
         self.step() # step through the velocity vector for the frame in order to prevent collision
@@ -61,9 +60,9 @@ class Player(pygame.sprite.Sprite):
         self.steps = max(1, min(self.steps, constants.MAX_STEPS))
 
         for _ in range(self.steps):
-            if self.connection and constants.pause:
+            if self.connection:
                 self.project_velocity() # arc
-            elif constants.pause:
+            else:
                 self.pos += self.vel / self.steps # normal movement
             
             # always res
@@ -225,6 +224,7 @@ class Player(pygame.sprite.Sprite):
             self.pos = new_pos
 
     def check_death(self):
+        # if not connected and below death barrier -- reset
         if not self.connection and self.pos.y > 2000:
             audio.play("./assets/audio/scream.mp3", 1, 0)
             time.sleep(2)

@@ -69,7 +69,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN and not constants.pause:
+        if event.type == pygame.MOUSEBUTTONDOWN and constants.pause:
             if leftArrow.collidepoint(event.pos):
                 audio.currentNum = audio.goLeft(audio.currentNum)
                 audio.currentsong = list(audio.music)[audio.currentNum].name
@@ -98,7 +98,7 @@ while True:
 
     for entity in all_sprites:
         virtual_screen.blit(entity.surf, camera.apply(entity.rect))
-        if constants.pause:
+        if not constants.pause:
             entity.update()
         
     
@@ -108,7 +108,7 @@ while True:
     displaysurface.blit(scaled_screen, (0, 0))
     displaysurface.blit(text_surface, (70, 70))
 
-    if constants.pause == False:
+    if constants.pause == True:
         screen, leftArrow, rightArrow, song = audio.drawPause(virtual_screen, font)
         displaysurface.blit(screen, (0,0))
         audio.startedMusic = False
