@@ -25,3 +25,8 @@ ACCEL = 0.5 # horizontal acceleartion of player
 MAX_STEPS = 50 # maximum amount of steps for a collision
 MIN_BOUNCE_SPEED = 5 # minimum bounce from bounce pad
 REST_THRESHOLD = 2 # when to rest on platforms
+
+BOUNCEPAD_BOUNCE_MULT = 1.1
+PLATFORM_BOUNCE_MULT = 0.8
+
+DEATH_BARRIER = 2000 # if y > DEATH_BARRIER -> kill_player()

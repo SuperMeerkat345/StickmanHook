@@ -115,20 +115,10 @@ class Player(pygame.sprite.Sprite):
             # step 4: calculate new velocity
             # https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
             normal = normal_local.rotate(theta)
-
-            bounce_mult = 1
-            direction = 1
-
-            match type(platform).__name__:
-                case "BouncePad":
-                    bounce_mult = 1.1
-                case "Platform":
-                    bounce_mult = 0.8
-
             
             if isinstance(platform, BouncePad):
                 # add to velocity
-                self.vel = self.vel.reflect(normal) * bounce_mult
+                self.vel = self.vel.reflect(normal) * constants.BOUNCEPAD_BOUNCE_MULT
 
                 # set a minimum velocity to have after a bounce
                 if self.vel.length() < constants.MIN_BOUNCE_SPEED:
@@ -140,7 +130,7 @@ class Player(pygame.sprite.Sprite):
                     self.vel -= normal_dot * normal
                 else:
                     #reflect with damping
-                    self.vel = self.vel.reflect(normal) * bounce_mult
+                    self.vel = self.vel.reflect(normal) * constants.PLATFORM_BOUNCE_MULT
 
             # step 5: resolve penetration
             distance = pygame.math.Vector2(dx, dy).length()
@@ -213,9 +203,9 @@ class Player(pygame.sprite.Sprite):
         bounce_mult = 1
         match type(col).__name__:
                 case "BouncePad":
-                    bounce_mult = 1.1
+                    bounce_mult = constants.BOUNCEPAD_BOUNCE_MULT
                 case "Platform":
-                    bounce_mult = 0.8
+                    bounce_mult = constants.PLATFORM_BOUNCE_MULT
 
         if col: # there IS a collision
             self.vel *= -1*bounce_mult # adjust velocity for this change
@@ -225,14 +215,14 @@ class Player(pygame.sprite.Sprite):
 
     def check_death(self):
         # if not connected and below death barrier -- reset
-        if not self.connection and self.pos.y > 2000:
+        if not self.connection and self.pos.y > constants.DEATH_BARRIER:
             audio.play("./assets/audio/scream.mp3", 1, 0)
             time.sleep(2)
             self.pos = pygame.math.Vector2(500, 100)
             self.vel = pygame.math.Vector2(0, 0)
             audio.play(audio.music[audio.currentsong].value)
         
-        
+    
 
     # processes key inputs
     def process_input(self):

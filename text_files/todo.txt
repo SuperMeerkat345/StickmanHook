@@ -1,4 +1,5 @@
 1. Add level implementation which takes from scenes and makes it easy to add levels
-2. camera -- smoothness??
 3. implement working version of the snap?
 4. cleanup game.py -- maybe get connection working normally again
+5. ADD WIN CONDITION
+6. Add global file for player/cam?
