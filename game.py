@@ -26,12 +26,14 @@ pygame.display.set_caption("Game")
 # Design resolution (internal game logic runs here)
 
 virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT), pygame.SRCALPHA)
-
-
 displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
 
-audio.play(audio.music.SMELLSLIKETEENSPIRIT.value)
-audio.currentsong = audio.music.SMELLSLIKETEENSPIRIT.name
+# Load and scale the background image
+background_image = pygame.image.load("./assets/images/background1.png").convert()
+background_image = pygame.transform.scale(background_image, (constants.WIDTH, constants.HEIGHT))
+
+audio.play(audio.music.HAVENTOWNTHEME.value)
+audio.currentsong = audio.music.HAVENTOWNTHEME.name
 
 
 ## INIT CODE
@@ -77,6 +79,7 @@ while True:
 
     # background + ui
     virtual_screen.fill((0, 0, 255))
+    displaysurface.blit(background_image, (0, 0))
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {P1.vel}", True, (255, 255, 255))
 

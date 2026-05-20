@@ -3,7 +3,7 @@ import utils.constants as constants
 from enum import Enum
 
 currentsong = ""
-enumLength = 3
+enumLength = 6
 currentNum = 0
 startedMusic = True
 
@@ -11,6 +11,9 @@ class music(Enum):
     TIMEFORADVENTURE = "./assets/audio/time_for_adventure.mp3"
     STORY5MEETING = "./assets/audio/Story5meeting.mp3"
     SMELLSLIKETEENSPIRIT = "./assets/audio/SmellsLikeTeamSpirit.mp3"
+    HAVENTOWNTHEME = "./assets/audio/HavenTownTheme.mp3"
+    GERUDOVALLEY = "./assets/audio/GerudoValley.mp3"
+    HEDWIGSTHEME = "./assets/audio/HedwigsTheme.mp3"
 
 
 def drawPause(surface, font):
