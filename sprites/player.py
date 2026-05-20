@@ -1,5 +1,6 @@
 import pygame
 import math
+import time
 import utils.constants as constants
 import utils.audio as audio
 from sprites.platform import Platform
@@ -39,7 +40,8 @@ class Player(pygame.sprite.Sprite):
         self.process_input() # check which keys are held to determine acceleration (DEBUG)    
        
         # step 1: apply accel to velocity
-        self.vel += self.acc
+        if constants.pause:
+            self.vel += self.acc
 
         # step 2: using the calculated velocity, step through the movements
         self.step() # step through the velocity vector for the frame in order to prevent collision
@@ -59,9 +61,9 @@ class Player(pygame.sprite.Sprite):
         self.steps = max(1, min(self.steps, constants.MAX_STEPS))
 
         for _ in range(self.steps):
-            if self.connection:
+            if self.connection and constants.pause:
                 self.project_velocity() # arc
-            else:
+            elif constants.pause:
                 self.pos += self.vel / self.steps # normal movement
             
             # always res
@@ -224,9 +226,11 @@ class Player(pygame.sprite.Sprite):
 
     def check_death(self):
         if not self.connection and self.pos.y > 2000:
-            audio.play("./assets/audio/scream.mp3")
+            audio.play("./assets/audio/scream.mp3", 1, 0)
+            time.sleep(2)
             self.pos = pygame.math.Vector2(500, 100)
             self.vel = pygame.math.Vector2(0, 0)
+            audio.play(audio.music[audio.currentsong].value)
         
         
 

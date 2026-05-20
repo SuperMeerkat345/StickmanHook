@@ -16,6 +16,8 @@ root.destroy()
 # Window settings
 FPS = 60
 
+pause = True
+
 # Physics
 FRICTION = 0.12 # currently unused
 GRAVITY = 0.5

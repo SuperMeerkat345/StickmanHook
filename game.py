@@ -24,11 +24,14 @@ clock = pygame.time.Clock()
 pygame.display.set_caption("Game")
 
 # Design resolution (internal game logic runs here)
-virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT))
+
+virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT), pygame.SRCALPHA)
+
+
 displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
 
-#audio.play("./assets/audio/SmellsLikeTeamSpirit.mp3")
-#audio.queue("./assets/audio/time_for_adventure.mp3")
+audio.play(audio.music.SMELLSLIKETEENSPIRIT.value)
+audio.currentsong = audio.music.SMELLSLIKETEENSPIRIT.name
 
 
 ## INIT CODE
@@ -58,11 +61,20 @@ while True:
         if keys[pygame.K_w]:
             pygame.display.toggle_fullscreen()
             pygame.display.set_mode((constants.WIDTH/4, constants.HEIGHT/4))
+        if keys[pygame.K_ESCAPE]:
+            constants.pause = not constants.pause
         # close game log
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        
+        if event.type == pygame.MOUSEBUTTONDOWN and not constants.pause:
+            if leftArrow.collidepoint(event.pos):
+                audio.currentNum = audio.goLeft(audio.currentNum)
+                audio.currentsong = list(audio.music)[audio.currentNum].name
+            if rightArrow.collidepoint(event.pos):
+                audio.currentNum = audio.goRight(audio.currentNum)
+                audio.currentsong = list(audio.music)[audio.currentNum].name
+
     # background + ui
     virtual_screen.fill((0, 0, 255))
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
@@ -83,9 +95,8 @@ while True:
 
     for entity in all_sprites:
         virtual_screen.blit(entity.surf, camera.apply(entity.rect))
-        entity.update()
-    
-    
+        if constants.pause:
+            entity.update()
         
     
 
@@ -93,6 +104,13 @@ while True:
     scaled_screen = pygame.transform.scale(virtual_screen, (constants.WIDTH, constants.HEIGHT))
     displaysurface.blit(scaled_screen, (0, 0))
     displaysurface.blit(text_surface, (70, 70))
+
+    if constants.pause == False:
+        screen, leftArrow, rightArrow, song = audio.drawPause(virtual_screen, font)
+        displaysurface.blit(screen, (0,0))
+    else:
+        pygame.mixer.music.unpause()
+    
     
     pygame.display.flip()
     # re-render display
