@@ -5,6 +5,7 @@ from enum import Enum
 currentsong = ""
 enumLength = 3
 currentNum = 0
+startedMusic = True
 
 class music(Enum):
     TIMEFORADVENTURE = "./assets/audio/time_for_adventure.mp3"
@@ -20,6 +21,7 @@ def drawPause(surface, font):
     rightArrow = pygame.draw.polygon(surface, (255, 255, 255), [((constants.WIDTH/2+20+200),constants.HEIGHT/2), ((constants.WIDTH/2+200),constants.HEIGHT/2+20), ((constants.WIDTH/2+200),constants.HEIGHT/2-20)])
     song = pygame.draw.rect(surface, (128,128,128), [(constants.WIDTH/2-190), (constants.HEIGHT/2-20), (380), (40),])
     surface.blit(font.render(currentsong, True, 'red'), ((constants.WIDTH/2-180), (constants.HEIGHT/2-12)))
+    pygame.mixer.music.load(music[currentsong].value)
     return surface, leftArrow, rightArrow, song
 
 def goRight(num):

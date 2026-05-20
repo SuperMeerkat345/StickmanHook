@@ -108,10 +108,15 @@ while True:
     if constants.pause == False:
         screen, leftArrow, rightArrow, song = audio.drawPause(virtual_screen, font)
         displaysurface.blit(screen, (0,0))
+        audio.startedMusic = False
     else:
         pygame.mixer.music.unpause()
     
-    
+    # Check if music is not playing, then start it
+    if not audio.startedMusic:
+        audio.play(audio.music[audio.currentsong].value)
+        audio.startedMusic = True
+
     pygame.display.flip()
     # re-render display
     pygame.display.update()
