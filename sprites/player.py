@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((self.diameter, self.diameter), pygame.SRCALPHA)
         pygame.draw.circle(self.surf, (255, 0, 0), (self.radius, self.radius), self.radius)
         self.rect = self.surf.get_rect()
-        
+
         # self.skin = pygame.image.load("./assets/images/player1.png").convert_alpha()
         # self.skin.set_alpha(128)
         # self.skin = pygame.transform.scale(self.skin, (59.79, 135))
@@ -223,6 +223,8 @@ class Player(pygame.sprite.Sprite):
         if not self.connection and self.pos.y > constants.DEATH_BARRIER:
             audio.play("./assets/audio/scream.mp3", 1, 0)
             time.sleep(2)
+            audio.numclouds = 0
+            audio.clouds = []
             self.pos = pygame.math.Vector2(500, 100)
             self.vel = pygame.math.Vector2(0, 0)
             audio.play(audio.music[audio.currentsong].value)
