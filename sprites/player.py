@@ -17,6 +17,11 @@ class Player(pygame.sprite.Sprite):
         self.surf = pygame.Surface((self.diameter, self.diameter), pygame.SRCALPHA)
         pygame.draw.circle(self.surf, (255, 0, 0), (self.radius, self.radius), self.radius)
         self.rect = self.surf.get_rect()
+        
+        # self.skin = pygame.image.load("./assets/images/player1.png").convert_alpha()
+        # self.skin.set_alpha(128)
+        # self.skin = pygame.transform.scale(self.skin, (59.79, 135))
+        # self.surf = pygame.transform.scale(self.surf, (59.79, 135))
 
         # physics
         self.pos = pygame.math.Vector2(10, 10)

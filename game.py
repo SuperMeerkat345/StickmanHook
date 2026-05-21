@@ -30,7 +30,7 @@ displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), py
 
 # Load and scale the background image
 background_image = pygame.image.load("./assets/images/background1.png").convert()
-background_image = pygame.transform.scale(background_image, (constants.WIDTH, constants.HEIGHT))
+background_image = pygame.transform.scale(background_image, (constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT))
 
 audio.play(audio.music.HAVENTOWNTHEME.value)
 audio.currentsong = audio.music.HAVENTOWNTHEME.name
@@ -79,7 +79,8 @@ while True:
 
     # background + ui
     virtual_screen.fill((0, 0, 255))
-    displaysurface.blit(background_image, (0, 0))
+    virtual_screen.blit(background_image, (0, 0))
+    audio.numclouds = audio.drawCloud(virtual_screen, 3, audio.numclouds)
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {P1.vel}", True, (255, 255, 255))
 

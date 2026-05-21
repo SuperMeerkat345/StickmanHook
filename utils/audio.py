@@ -1,11 +1,17 @@
 import pygame
 import utils.constants as constants
 from enum import Enum
+import random
 
+#music vars
 currentsong = ""
 enumLength = 6
 currentNum = 0
 startedMusic = True
+
+#cloud vars
+numclouds = 0
+clouds = []
 
 class music(Enum):
     TIMEFORADVENTURE = "./assets/audio/time_for_adventure.mp3"
@@ -27,12 +33,41 @@ def drawPause(surface, font):
     pygame.mixer.music.load(music[currentsong].value)
     return surface, leftArrow, rightArrow, song
 
+def drawCloud(surface, max = 3, num = numclouds):
+    if not constants.pause:
+        if num < max:
+            screen = pygame.Surface((190, 135), pygame.SRCALPHA)
+            cloud = pygame.image.load("./assets/images/cloud1.png").convert_alpha()
+            cloud.set_alpha(128)
+            cloud = pygame.transform.scale(cloud, (190, 135))
+            screen.blit(cloud, (0,0))
+            randnum1 = random.randint(1, 5)
+            randnum2 = random.randint(0, 540)
+            clouds.append( [screen, -190*randnum1, 540-(randnum2)])
+            num += 1
+            #print(clouds)
+        for index, cloud in enumerate(clouds):
+            surface.blit(cloud[0], (cloud[1], cloud[2]))
+            clouds[index] = [cloud[0], ((1)+cloud[1]), (cloud[2])]
+            if clouds[index][1] > constants.VIRTUAL_WIDTH:
+                clouds.pop(index)
+                num -= 1
+            
+
+        return num
+    else:
+        for index, cloud in enumerate(clouds):
+            surface.blit(cloud[0], (cloud[1], cloud[2]))
+            clouds[index] = [cloud[0], ((0)+cloud[1]), (cloud[2])]
+        return num
+   
+    
 def goRight(num):
     if num < enumLength-1:
         num += 1
     else: 
         num = 0
-    print(num)
+    #print(num)
     return num
 
 def goLeft(num):
@@ -40,7 +75,7 @@ def goLeft(num):
         num -= 1
     else: 
         num = enumLength-1
-    print(num)
+    #print(num)
     return num
 
 def play(filename, start = 0, repeat = -1):
