@@ -3,13 +3,11 @@ import json
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
 from sprites.swing import Swing
+from sprites.player import Player
 
 class LevelLoader:
-    def __init__(self, all_sprites, platforms, swings):
-        # groups
-        self.all_sprites = all_sprites
-        self.platforms = platforms
-        self.swings = swings
+    def __init__(self, game_state):
+        self.game_state = game_state
 
     def load(self, path):
         try:
@@ -20,19 +18,33 @@ class LevelLoader:
         except json.JSONDecodeError:
             print("Failed to decode JSON. Check the file format.")
 
+        # INIT PLAYER
+        self.game_state.player = Player(
+            self.game_state, # world reference 
+            level["player_spawn"]["x"], # set x & y positions
+            level["player_spawn"]["y"]
+        )
+        self.game_state.all_sprites.add(self.game_state.player)
+
+        # INIT CAMERA
+        #self.camera = 
+
+
         for obj in level["objects"]:
             obj_type = obj["type"]
 
             if obj_type == "swing":
                 swing = Swing(
+                    self.game_state,
                     obj["x"],
                     obj["y"]
                 )
-                self.all_sprites.add(swing)
-                self.swings.add(swing)
+                self.game_state.all_sprites.add(swing)
+                self.game_state.swings.add(swing)
 
             elif obj_type == "platform":
                 platform = Platform(
+                    self.game_state,
                     obj["x"],
                     obj["y"],
                     obj["width"],
@@ -40,11 +52,12 @@ class LevelLoader:
                     obj["rotation"]
                 )
 
-                self.all_sprites.add(platform)
-                self.platforms.add(platform)
+                self.game_state.all_sprites.add(platform)
+                self.game_state.platforms.add(platform)
 
             elif obj_type == "bounce_pad":
                 bounce_pad = BouncePad(
+                    self.game_state,
                     obj["x"],
                     obj["y"],
                     obj["width"],
@@ -52,7 +65,7 @@ class LevelLoader:
                     obj["rotation"]
                 )
 
-                self.all_sprites.add(bounce_pad)
-                self.platforms.add(bounce_pad)
+                self.game_state.all_sprites.add(bounce_pad)
+                self.game_state.platforms.add(bounce_pad)
         
     #def unload(self)

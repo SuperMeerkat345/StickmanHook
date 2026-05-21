@@ -1,8 +1,11 @@
 import pygame
 
 class Swing(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, game_state, x, y):
         super().__init__()
+        game_state.all_sprites.add(self)
+        game_state.swings.add(self)
+
         self.pos = pygame.math.Vector2(x, y)
         self.radius = 15
         self.diameter = self.radius*2

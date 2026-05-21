@@ -7,6 +7,7 @@ import sys
 import utils.constants as constants
 from utils.camera import Camera
 from utils.level_loader import LevelLoader
+from utils.game_state import GameState
 import utils.audio as audio
 
 
@@ -35,25 +36,27 @@ background_image = pygame.transform.scale(background_image, (constants.VIRTUAL_W
 audio.play(audio.music.HAVENTOWNTHEME.value)
 audio.currentsong = audio.music.HAVENTOWNTHEME.name
 
+game_state = GameState()
 
 ## INIT CODE
 # CAMERA
 camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
 
 # GROUPS
-all_sprites = pygame.sprite.Group()
-platforms = pygame.sprite.Group()
-swings = pygame.sprite.Group()
 
-level_loader = LevelLoader(all_sprites, platforms, swings)
+
+level_loader = LevelLoader(game_state)
 level_loader.load("./scenes/levels/test_level.json")
 
 # --- PLAYER ---
-P1 = Player(all_sprites, platforms, swings)
-P1.pos = pygame.math.Vector2(500, 100)
-all_sprites.add(P1)
+#P1 = Player(game_state)
+#P1.pos = pygame.math.Vector2(500, 100)
+#game_state.all_sprites.add(P1)
 
 ## ENDINIT
+
+
+
 
 # game loop
 while True:
@@ -64,12 +67,12 @@ while True:
             pygame.display.toggle_fullscreen()
             pygame.display.set_mode((constants.WIDTH/4, constants.HEIGHT/4))
         if keys[pygame.K_ESCAPE]:
-            constants.pause = not constants.pause
+            game_state.paused = not game_state.paused
         # close game log
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN and constants.pause:
+        if event.type == pygame.MOUSEBUTTONDOWN and game_state.paused:
             if leftArrow.collidepoint(event.pos):
                 audio.currentNum = audio.goLeft(audio.currentNum)
                 audio.currentsong = list(audio.music)[audio.currentNum].name
@@ -82,24 +85,24 @@ while True:
     virtual_screen.blit(background_image, (0, 0))
     audio.numclouds = audio.drawCloud(virtual_screen, 3, audio.numclouds)
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
-    text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {P1.vel}", True, (255, 255, 255))
+    text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {game_state.player.vel}", True, (255, 255, 255))
 
     # draw sprites and update sprites
-    camera.update(P1) # follow player with cam
+    camera.update(game_state.player) # follow player with cam
 
     # draw rope if needed
-    if P1.connection:
+    if game_state.player.connection:
         pygame.draw.line(
             virtual_screen,
             (255,255,255),
-            camera.apply_pos(P1.pos),
-            camera.apply_pos(P1.connection.pos),
+            camera.apply_pos(game_state.player.pos),
+            camera.apply_pos(game_state.player.connection.pos),
             5
         )
 
-    for entity in all_sprites:
+    for entity in game_state.all_sprites:
         virtual_screen.blit(entity.surf, camera.apply(entity.rect))
-        if not constants.pause:
+        if not game_state.paused:
             entity.update()
         
     
@@ -109,7 +112,7 @@ while True:
     displaysurface.blit(scaled_screen, (0, 0))
     displaysurface.blit(text_surface, (70, 70))
 
-    if constants.pause == True:
+    if game_state.paused == True:
         screen, leftArrow, rightArrow, song = audio.drawPause(virtual_screen, font)
         displaysurface.blit(screen, (0,0))
         audio.startedMusic = False

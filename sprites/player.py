@@ -8,8 +8,10 @@ from sprites.bounce_pad import BouncePad
 from sprites.connector import Connector
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, all_sprites, platforms, swings):
+    def __init__(self, game_state, startx, starty):
         super().__init__()
+        # auto-add to groups
+        game_state.all_sprites.add(self)
         
         # visual
         self.radius = 15
@@ -24,16 +26,14 @@ class Player(pygame.sprite.Sprite):
         # self.surf = pygame.transform.scale(self.surf, (59.79, 135))
 
         # physics
-        self.pos = pygame.math.Vector2(10, 10)
+        self.pos = pygame.math.Vector2(startx, starty)
         self.vel = pygame.math.Vector2(0, 0)
         self.acc = pygame.math.Vector2(0, 0)
         self.steps = 1 # number of simulations to run per frame
         
         # world reference (auto-updated)
-        self.all_sprites = all_sprites
-        self.platforms = platforms
-        self.swings = swings
-    
+        self.game_state = game_state
+
         # connection
         self.connection = None
     
@@ -84,7 +84,7 @@ class Player(pygame.sprite.Sprite):
     # you have no clue how much work went into ts
     # hardest physics problem ive ever done...
     def resolve_collisions(self):
-        for platform in self.platforms:
+        for platform in self.game_state.platforms:
             # step 0: rotate system to regular x,y plane
             dist = self.pos - platform.pos
             theta = platform.angle # degrees
@@ -146,7 +146,7 @@ class Player(pygame.sprite.Sprite):
     # checks if there is a collision at a specific position
     # see resolve_collision for proper documentation
     def is_collision(self, player_pos):
-        for platform in self.platforms:
+        for platform in self.game_state.platforms:
             dist = player_pos - platform.pos
             relative = dist.rotate(-platform.angle)
             closest_x = max(-platform.width/2, min(relative.x, platform.width/2))
@@ -160,13 +160,13 @@ class Player(pygame.sprite.Sprite):
     # connects to the nearest swing
     def connect(self):
         # if alr connected or no swings, exit
-        if self.connection or len(self.swings) == 0:
+        if self.connection or len(self.game_state.swings) == 0:
             return
         
 
         # get swing with the lowest distance to the player
         closest_swing = min(
-            self.swings, 
+            self.game_state.swings, 
             key=lambda swing: math.dist((self.pos.x, self.pos.y), (swing.pos.x, swing.pos.y))
         )
         
@@ -220,14 +220,21 @@ class Player(pygame.sprite.Sprite):
 
     def check_death(self):
         # if not connected and below death barrier -- reset
+        print("alive")
         if not self.connection and self.pos.y > constants.DEATH_BARRIER:
+            print("dead")
             audio.play("./assets/audio/scream.mp3", 1, 0)
+            print("1")
             time.sleep(2)
+            print("2")
             audio.numclouds = 0
             audio.clouds = []
-            self.pos = pygame.math.Vector2(500, 100)
+            print("3")
+            self.pos = pygame.math.Vector2(self.game_state.startx, self.game_state.starty)
             self.vel = pygame.math.Vector2(0, 0)
+            print("4")
             audio.play(audio.music[audio.currentsong].value)
+            print("5")
         
     
 
