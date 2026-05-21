@@ -1,5 +1,3 @@
-# deprecated
-
 import pygame
 import utils.constants as constants
 
@@ -8,19 +6,19 @@ class Connector(pygame.sprite.Sprite):
         super().__init__()
         game_state.all_sprites.add(self)
 
-        self.surf = virtual_screen
+        self.game_state = game_state
+
+        self.surf = pygame.Surface((abs(obj1.pos.x-obj2.pos.x), abs(obj1.pos.y-obj2.pos.y)), pygame.SRCALPHA)
         self.rect = self.surf.get_rect()
 
         self.obj1 = obj1
         self.obj2 = obj2
 
     def update(self):
-        self.surf.fill((255, 255, 255, 1)) # clear
-
         pygame.draw.line(
-            self.surf, # surf
-            (255, 255, 255), # color
-            (self.obj1.pos.x, self.obj1.pos.y), # start
-            (self.obj2.pos.x, self.obj2.pos.y), # end
-            5 # width
+            self.game_state.virtual_screen,
+            (255,255,255),
+            self.game_state.camera.apply_pos(self.obj1.pos),
+            self.game_state.camera.apply_pos(self.obj2.pos),
+            5
         )

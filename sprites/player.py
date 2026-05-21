@@ -75,7 +75,7 @@ class Player(pygame.sprite.Sprite):
             
             # reconstrain
             if self.connection:
-                anchor_pos = self.connection.pos
+                anchor_pos = self.connection.obj2.pos
                 diff = self.pos - anchor_pos
                 if diff.length() > 0:
                     self.pos = anchor_pos + diff.normalize() * self.active_rope_length
@@ -170,7 +170,7 @@ class Player(pygame.sprite.Sprite):
             key=lambda swing: math.dist((self.pos.x, self.pos.y), (swing.pos.x, swing.pos.y))
         )
         
-        self.connection = closest_swing # make the connection
+        self.connection = Connector(self.game_state, self, closest_swing)
 
         # savae length as constant
         self.active_rope_length = (self.pos - closest_swing.pos).length() *0.9
@@ -179,7 +179,7 @@ class Player(pygame.sprite.Sprite):
         if self.connection is None:
             return
         
-        anchor_pos = self.connection.pos
+        anchor_pos = self.connection.obj2.pos
         radius_vector = self.pos - anchor_pos
         radius_length = radius_vector.length()
 
@@ -225,7 +225,7 @@ class Player(pygame.sprite.Sprite):
             time.sleep(1.5)
             audio.numclouds = 0
             audio.clouds = []
-            self.pos = pygame.math.Vector2(self.game_state.startx, self.game_state.starty)
+            self.pos = self.game_state.start_pos
             self.vel = pygame.math.Vector2(0, 0)
             audio.play(audio.music[audio.currentsong].value)
         
@@ -242,6 +242,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE]:
             self.connect()
         elif self.connection: # if not pressing space, clear connection
+            self.game_state.all_sprites.remove(self.connection)
             self.connection = None
 
     

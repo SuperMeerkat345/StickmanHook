@@ -1,8 +1,13 @@
 import pygame
+import utils.constants as constants
 
 class GameState:
     def __init__(self):
-        # Groups
+        # app
+        self.virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT), pygame.SRCALPHA)
+        self.displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
+
+        # groups
         self.all_sprites = pygame.sprite.Group()
         self.platforms = pygame.sprite.Group()
         self.swings = pygame.sprite.Group()
@@ -15,7 +20,6 @@ class GameState:
         self.player = None
         self.camera = None
 
-        # for re-spawning
-        self.startx = 0
-        self.starty = 0
+        # for re-spawning (starting position)
+        self.start_pos = pygame.math.Vector2(0, 0)
     

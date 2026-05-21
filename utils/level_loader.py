@@ -1,4 +1,5 @@
 import json
+import pygame
 
 # utils
 import utils.constants as constants
@@ -28,7 +29,9 @@ class LevelLoader:
             level["player_spawn"]["x"], # set x & y positions
             level["player_spawn"]["y"]
         )
-        self.game_state.all_sprites.add(self.game_state.player)
+
+        # init starting/respawn point
+        self.game_state.start_pos = pygame.math.Vector2(level["player_spawn"]["x"], level["player_spawn"]["y"])
 
         # INIT CAMERA
         self.game_state.camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
@@ -43,9 +46,7 @@ class LevelLoader:
                     obj["x"],
                     obj["y"]
                 )
-                self.game_state.all_sprites.add(swing)
-                self.game_state.swings.add(swing)
-
+            
             elif obj_type == "platform":
                 platform = Platform(
                     self.game_state,
@@ -55,9 +56,6 @@ class LevelLoader:
                     obj["height"],
                     obj["rotation"]
                 )
-
-                self.game_state.all_sprites.add(platform)
-                self.game_state.platforms.add(platform)
 
             elif obj_type == "bounce_pad":
                 bounce_pad = BouncePad(
@@ -69,7 +67,5 @@ class LevelLoader:
                     obj["rotation"]
                 )
 
-                self.game_state.all_sprites.add(bounce_pad)
-                self.game_state.platforms.add(bounce_pad)
         
     #def unload(self)

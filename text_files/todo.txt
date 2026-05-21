@@ -3,3 +3,4 @@
 4. cleanup game.py -- maybe get connection working normally again
 5. ADD WIN CONDITION
 6. Add global file for player/cam?
+7. implement auto adding to groups for ALL
