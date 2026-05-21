@@ -39,10 +39,7 @@ audio.currentsong = audio.music.HAVENTOWNTHEME.name
 game_state = GameState()
 
 ## INIT CODE
-# CAMERA
-camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
 
-# GROUPS
 
 
 level_loader = LevelLoader(game_state)
@@ -54,9 +51,6 @@ level_loader.load("./scenes/levels/test_level.json")
 #game_state.all_sprites.add(P1)
 
 ## ENDINIT
-
-
-
 
 # game loop
 while True:
@@ -88,20 +82,20 @@ while True:
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {game_state.player.vel}", True, (255, 255, 255))
 
     # draw sprites and update sprites
-    camera.update(game_state.player) # follow player with cam
+    game_state.camera.update(game_state.player) # follow player with cam
 
     # draw rope if needed
     if game_state.player.connection:
         pygame.draw.line(
             virtual_screen,
             (255,255,255),
-            camera.apply_pos(game_state.player.pos),
-            camera.apply_pos(game_state.player.connection.pos),
+            game_state.camera.apply_pos(game_state.player.pos),
+            game_state.camera.apply_pos(game_state.player.connection.pos),
             5
         )
 
     for entity in game_state.all_sprites:
-        virtual_screen.blit(entity.surf, camera.apply(entity.rect))
+        virtual_screen.blit(entity.surf, game_state.camera.apply(entity.rect))
         if not game_state.paused:
             entity.update()
         

@@ -220,21 +220,14 @@ class Player(pygame.sprite.Sprite):
 
     def check_death(self):
         # if not connected and below death barrier -- reset
-        print("alive")
         if not self.connection and self.pos.y > constants.DEATH_BARRIER:
-            print("dead")
             audio.play("./assets/audio/scream.mp3", 1, 0)
-            print("1")
-            time.sleep(2)
-            print("2")
+            time.sleep(1.5)
             audio.numclouds = 0
             audio.clouds = []
-            print("3")
             self.pos = pygame.math.Vector2(self.game_state.startx, self.game_state.starty)
             self.vel = pygame.math.Vector2(0, 0)
-            print("4")
             audio.play(audio.music[audio.currentsong].value)
-            print("5")
         
     
 

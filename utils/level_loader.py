@@ -1,5 +1,9 @@
 import json
 
+# utils
+import utils.constants as constants
+from utils.camera import Camera
+
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
 from sprites.swing import Swing
@@ -27,7 +31,7 @@ class LevelLoader:
         self.game_state.all_sprites.add(self.game_state.player)
 
         # INIT CAMERA
-        #self.camera = 
+        self.game_state.camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
 
 
         for obj in level["objects"]:
