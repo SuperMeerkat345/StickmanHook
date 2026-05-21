@@ -52,8 +52,6 @@ def drawCloud(surface, max = 3, num = numclouds):
             if clouds[index][1] > constants.VIRTUAL_WIDTH:
                 clouds.pop(index)
                 num -= 1
-            
-
         return num
     else:
         for index, cloud in enumerate(clouds):
@@ -89,4 +87,3 @@ def play(filename, start = 0, repeat = -1):
 
 def queue(filename):
     pygame.mixer.music.queue(filename)
-
