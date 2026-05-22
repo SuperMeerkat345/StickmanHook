@@ -74,7 +74,6 @@ while True:
     # background + ui
     game_state.virtual_screen.fill((0, 0, 255))
     game_state.virtual_screen.blit(background_image, (0, 0))
-    #audio.numclouds = audio.drawCloud(game_state.virtual_screen, 3, audio.numclouds)
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {game_state.player.vel}", True, (255, 255, 255))
 

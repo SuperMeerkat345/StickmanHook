@@ -32,33 +32,6 @@ def drawPause(surface, font):
     surface.blit(font.render(currentsong, True, 'red'), ((constants.WIDTH/2-180), (constants.HEIGHT/2-12)))
     pygame.mixer.music.load(music[currentsong].value)
     return surface, leftArrow, rightArrow, song
-
-def drawCloud(surface, max = 3, num = numclouds):
-    if True:# and not constants.pause:
-        if num < max:
-            screen = pygame.Surface((190, 135), pygame.SRCALPHA)
-            cloud = pygame.image.load("./assets/images/cloud1.png").convert_alpha()
-            cloud.set_alpha(128)
-            cloud = pygame.transform.scale(cloud, (190, 135))
-            screen.blit(cloud, (0,0))
-            randnum1 = random.randint(1, 5)
-            randnum2 = random.randint(0, 540)
-            clouds.append( [screen, -190*randnum1, 540-(randnum2)])
-            num += 1
-            #print(clouds)
-        for index, cloud in enumerate(clouds):
-            surface.blit(cloud[0], (cloud[1], cloud[2]))
-            clouds[index] = [cloud[0], ((1)+cloud[1]), (cloud[2])]
-            if clouds[index][1] > constants.VIRTUAL_WIDTH:
-                clouds.pop(index)
-                num -= 1
-        return num
-    else:
-        for index, cloud in enumerate(clouds):
-            surface.blit(cloud[0], (cloud[1], cloud[2]))
-            clouds[index] = [cloud[0], ((0)+cloud[1]), (cloud[2])]
-        return num
-   
     
 def goRight(num):
     if num < enumLength-1:
