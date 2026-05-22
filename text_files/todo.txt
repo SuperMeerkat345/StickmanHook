@@ -5,3 +5,4 @@
 6. Add global file for player/cam?
 7. make clouds a sprite/class
 8. make pause menu more idiomatic
+9. implement z-scaling for clouds??

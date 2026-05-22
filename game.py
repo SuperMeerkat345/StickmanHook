@@ -10,6 +10,7 @@ from utils.camera import Camera
 from utils.level_loader import LevelLoader
 from utils.game_state import GameState
 import utils.audio as audio
+from utils.cloud_manager import CloudManager
 
 #sprites
 from sprites.player import Player
@@ -39,10 +40,12 @@ audio.currentsong = audio.music.HAVENTOWNTHEME.name
 
 ## INIT CODE
 
-c1 = Cloud(game_state)
-
 level_loader = LevelLoader(game_state)
 level_loader.load("./scenes/levels/test_level.json")
+
+cloud_manager = CloudManager(game_state, 5) # always have 5 clouds
+
+
 
 ## ENDINIT
 
