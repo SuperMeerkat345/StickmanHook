@@ -4,17 +4,18 @@ import sys
 
 
 # local imports
+# utils
 import utils.constants as constants
 from utils.camera import Camera
 from utils.level_loader import LevelLoader
 from utils.game_state import GameState
 import utils.audio as audio
 
-
+#sprites
 from sprites.player import Player
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
-
+from sprites.cloud import Cloud
 from sprites.swing import Swing
 from sprites.connector import Connector
 
@@ -38,6 +39,7 @@ audio.currentsong = audio.music.HAVENTOWNTHEME.name
 
 ## INIT CODE
 
+c1 = Cloud(game_state)
 
 level_loader = LevelLoader(game_state)
 level_loader.load("./scenes/levels/test_level.json")
@@ -69,7 +71,7 @@ while True:
     # background + ui
     game_state.virtual_screen.fill((0, 0, 255))
     game_state.virtual_screen.blit(background_image, (0, 0))
-    audio.numclouds = audio.drawCloud(game_state.virtual_screen, 3, audio.numclouds)
+    #audio.numclouds = audio.drawCloud(game_state.virtual_screen, 3, audio.numclouds)
     font = pygame.font.SysFont("Arial", 20)  # Use None for default font
     text_surface = font.render(f"FPS: {str(round(clock.get_fps()))} Velocity: {game_state.player.vel}", True, (255, 255, 255))
 
@@ -92,7 +94,7 @@ while True:
 
     if game_state.paused == True:
         screen, leftArrow, rightArrow, song = audio.drawPause(game_state.virtual_screen, font)
-        displaysurface.blit(screen, (0,0))
+        game_state.displaysurface.blit(screen, (0,0))
         audio.startedMusic = False
     else:
         pygame.mixer.music.unpause()

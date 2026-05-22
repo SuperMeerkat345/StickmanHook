@@ -1,6 +1,7 @@
-1. Add level implementation which takes from scenes and makes it easy to add levels
+
 3. implement working version of the snap?
-4. cleanup game.py -- maybe get connection working normally again
+4. cleanup game.py
 5. ADD WIN CONDITION
 6. Add global file for player/cam?
-7. implement auto adding to groups for ALL
+7. make clouds a sprite/class
+8. make pause menu more idiomatic

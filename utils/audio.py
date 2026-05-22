@@ -34,7 +34,7 @@ def drawPause(surface, font):
     return surface, leftArrow, rightArrow, song
 
 def drawCloud(surface, max = 3, num = numclouds):
-    if True:#not constants.pause:
+    if True:# and not constants.pause:
         if num < max:
             screen = pygame.Surface((190, 135), pygame.SRCALPHA)
             cloud = pygame.image.load("./assets/images/cloud1.png").convert_alpha()

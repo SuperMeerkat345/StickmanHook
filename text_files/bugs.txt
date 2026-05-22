@@ -1,1 +1,2 @@
 1. When on connector, infinite bounces can't slow down
+2. connector lagging behind player when swinging.
