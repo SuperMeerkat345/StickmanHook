@@ -1,5 +1,7 @@
 # system modules
 import pygame
+pygame.init()
+
 import sys
 
 
@@ -20,7 +22,7 @@ from sprites.cloud import Cloud
 from sprites.swing import Swing
 from sprites.connector import Connector
 
-pygame.init()
+
 clock = pygame.time.Clock()
 
 # setup window
@@ -80,8 +82,6 @@ while True:
     # draw sprites and update sprites
     game_state.camera.update(game_state.player) # follow player with cam
 
-  
-
     for entity in game_state.all_sprites:
         game_state.virtual_screen.blit(entity.surf, game_state.camera.apply(entity.rect))
         if not game_state.paused:
@@ -111,4 +111,4 @@ while True:
     pygame.display.update()
     clock.tick(constants.FPS) # limit loop to 60 fps
 
-   
+

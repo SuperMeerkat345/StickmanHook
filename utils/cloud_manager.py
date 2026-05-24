@@ -4,7 +4,7 @@ from sprites.cloud import Cloud
 
 class CloudManager:
     def __init__(self, game_state, numclouds):
-        self.game_state = game_state
+        self.game_state = game_state 
 
         for _ in range(numclouds):
             cloud = Cloud(game_state)

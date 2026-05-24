@@ -173,7 +173,18 @@ class Player(pygame.sprite.Sprite):
         self.connection = Connector(self.game_state, self, closest_swing)
 
         # savae length as constant
-        self.active_rope_length = (self.pos - closest_swing.pos).length() *0.9
+        self.active_rope_length = (self.pos - closest_swing.pos).length()-12# - min(10, self.vel.length()*0.9)
+
+        # increase velocity along current trajectory
+        anchor_pos = self.connection.obj2.pos
+        radius_vector = self.pos - anchor_pos
+        radius_length = radius_vector.length()
+
+        if radius_length == 0:
+            return
+        perpendicular_vector = radius_vector.rotate(90)
+        self.vel = self.vel.project(perpendicular_vector)
+        self.vel *= 1.1
     
     def project_velocity(self):
         if self.connection is None:

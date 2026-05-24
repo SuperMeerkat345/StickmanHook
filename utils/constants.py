@@ -1,9 +1,10 @@
-import tkinter as tk
+import pygame
 
-root = tk.Tk()
+info = pygame.display.Info()
+
 # Get width and height in pixels
-WIDTH = root.winfo_screenwidth()
-HEIGHT = root.winfo_screenheight()
+WIDTH = info.current_w
+HEIGHT = info.current_h
 
 VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 1920, 1080
 
@@ -12,7 +13,6 @@ VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 1920, 1080
 # HEIGHT = 1000
 
 print(f"Screen Size: {WIDTH} x {HEIGHT} pixels")
-root.destroy()
 # Window settings
 FPS = 60
 
