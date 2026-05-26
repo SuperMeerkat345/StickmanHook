@@ -42,11 +42,6 @@ audio.currentsong = audio.music.HAVENTOWNTHEME.name
 
 ## INIT CODE
 
-level_loader = LevelLoader(game_state)
-level_loader.load("./scenes/levels/test_level.json")
-
-cloud_manager = CloudManager(game_state, 5) # always have 5 clouds
-
 
 
 ## ENDINIT
@@ -82,24 +77,20 @@ while True:
     # draw sprites and update sprites
     game_state.camera.update(game_state.player) # follow player with cam
 
-    for entity in game_state.all_sprites:
 
-        if hasattr(entity, 'player') and game_state.game_won:
-             game_state.virtual_screen.blit(entity.surf, game_state.camera.apply_pos_exact(entity.pos))
-        else:
-            game_state.virtual_screen.blit(entity.surf, game_state.camera.apply(entity.rect))
+    for entity in game_state.all_sprites:
+        game_state.virtual_screen.blit(entity.surf, game_state.camera.apply(entity.rect))
         if not game_state.paused:
             entity.update()
-            if hasattr(entity, 'draw'):
-                entity.draw()
-            else:
-                pass
-                #print("Entity does not have a draw method")
-        
+            
+    # apply zoom
     
-
     #scale screen
-    scaled_screen = pygame.transform.scale(game_state.virtual_screen, (constants.WIDTH, constants.HEIGHT))
+    scaled_screen = pygame.transform.scale(
+        game_state.virtual_screen, 
+        (constants.WIDTH, constants.HEIGHT)
+    )
+
     game_state.displaysurface.blit(scaled_screen, (0, 0))
     game_state.displaysurface.blit(text_surface, (70, 70))
 

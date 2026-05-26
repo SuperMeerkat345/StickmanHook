@@ -6,9 +6,8 @@ info = pygame.display.Info()
 WIDTH = info.current_w
 HEIGHT = info.current_h
 
-VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 1920, 1080
-
-NOTACTUALVIRTUAL_WIDTH, NOTACTUALVIRTUAL_HEIGHT = 500, 281
+VIRTUAL_WIDTH, VIRTUAL_HEIGHT = 1920, 1080        # default pixel dimensions of window
+MIN_VIRTUAL_WIDTH, MIN_VIRTUAL_HEIGHT = 192, 108  # min dimensions when zooming
 
 # Window size
 # WIDTH = 1000

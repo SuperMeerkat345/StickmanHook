@@ -9,10 +9,6 @@ enumLength = 6
 currentNum = 0
 startedMusic = True
 
-#cloud vars
-numclouds = 0
-clouds = []
-
 class music(Enum):
     TIMEFORADVENTURE = "./assets/audio/time_for_adventure.mp3"
     STORY5MEETING = "./assets/audio/Story5meeting.mp3"

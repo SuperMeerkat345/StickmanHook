@@ -4,6 +4,7 @@ import pygame
 # utils
 import utils.constants as constants
 from utils.camera import Camera
+from utils.cloud_manager import CloudManager
 
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
@@ -24,6 +25,9 @@ class LevelLoader:
         except json.JSONDecodeError:
             print("Failed to decode JSON. Check the file format.")
 
+        # level id
+        self.level_id = level["level_id"]
+
         # INIT PLAYER
         self.game_state.player = Player(
             self.game_state, # world reference 
@@ -34,11 +38,14 @@ class LevelLoader:
         # init starting/respawn point
         self.game_state.start_pos = pygame.math.Vector2(level["player_spawn"]["x"], level["player_spawn"]["y"])
 
-        # INIT CAMERA
+        # INIT CAMERA (why is this capitalized)
         self.game_state.camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
 
         # finish line
         self.game_state.finish_line = FinishLine(self.game_state, level["finish_line_pos"])
+
+        # cloud manager
+        self.game_state.cloud_manager = CloudManager(self.game_state, 5)
 
         for obj in level["objects"]:
             obj_type = obj["type"]
@@ -71,4 +78,18 @@ class LevelLoader:
                 )
 
         
-    #def unload(self)
+    def unload(self):
+        # kill all sprites
+        for sprite in self.game_state.all_sprites:
+            sprite.kill()
+
+        # reset flags
+        self.game_state.paused = False
+        self.game_state.game_won = False
+
+        
+
+
+    def load_next_level(self):
+        self.unload()
+        self.load(f"./scenes/levels/level_{self.level_id+1}.json")

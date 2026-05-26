@@ -1,5 +1,7 @@
 import pygame
 
+import utils.constants as constants
+
 class Camera:
     def __init__(self, width, height):
         self.offset = pygame.math.Vector2()
@@ -8,6 +10,8 @@ class Camera:
 
         self.offset.x = 0
         self.offset.y = 0
+
+        self.zoom = 0.5
 
     # update camera position to follow a target
     def update(self, target):
@@ -19,14 +23,15 @@ class Camera:
         # dont apply vertical offset for now...
         return rect.move(-self.offset.x, 0) #rect.move(-self.offset.x, -self.offset.y)
 
-    # applies offset to a position vector
+    # applies camera's offset to a position vector
     def apply_pos(self, pos):
         return (
-            pos.x - self.offset.x,
+            (pos.x - self.offset.x),
             pos.y
         )
     
-    def apply_pos_exact(self, pos):
+    # sets the camera's offsets to the vector passed in
+    def set_offset(self, pos):
         self.offset.x = pos.x
         self.offset.y = pos.y
 

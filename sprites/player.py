@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         # auto-add to groups
         game_state.all_sprites.add(self)
         
-        self.player = True
+        
         # visual
         self.radius = 15
         self.diameter = self.radius*2
@@ -177,7 +177,7 @@ class Player(pygame.sprite.Sprite):
         self.connection = Connector(self.game_state, self, closest_swing)
 
         # savae length as constant
-        self.active_rope_length = (self.pos - closest_swing.pos).length()-12# - min(10, self.vel.length()*0.9)
+        self.active_rope_length = (self.pos - closest_swing.pos).length()-15# - min(10, self.vel.length()*0.9)
 
         # increase velocity along current trajectory
         anchor_pos = self.connection.obj2.pos
@@ -246,15 +246,18 @@ class Player(pygame.sprite.Sprite):
         if self.game_state.finish_line and self.pos.x > self.game_state.finish_line.x:
             # slow down for the cinema *fire_emoji**fire_emoji**fire_emoji*
             self.vel *= 0.95
-            #return True
             self.acc = pygame.math.Vector2(0, 0) 
             
             #play win sound
             if self.game_state.game_won == False:
-                self.game_state.virtual_screen = pygame.Surface((constants.NOTACTUALVIRTUAL_WIDTH, constants.NOTACTUALVIRTUAL_HEIGHT), pygame.SRCALPHA)
+                #self.game_state.virtual_screen = pygame.Surface((constants.NOTACTUALVIRTUAL_WIDTH, constants.NOTACTUALVIRTUAL_HEIGHT), pygame.SRCALPHA)
 
                 audio.play("./assets/audio/hey.mp3", 0, 0)
                 self.game_state.game_won = True
+        
+            if self.vel.length() == 0:
+                self.game_state.level_loader.load_next_level()
+            
     
 
     # processes key inputs

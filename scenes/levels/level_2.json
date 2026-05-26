@@ -1,0 +1,163 @@
+{
+  "level_id": 2,
+
+  "finish_line_pos": 8500,
+
+  "player_spawn": {
+    "x": 200,
+    "y": 150
+  },
+
+  "objects": [
+
+    {
+      "type": "platform",
+      "x": 0,
+      "y": 500,
+      "width": 400,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 700,
+      "y": 400,
+      "width": 250,
+      "height": 30,
+      "rotation": 10
+    },
+
+    {
+      "type": "platform",
+      "x": 1200,
+      "y": 250,
+      "width": 350,
+      "height": 30,
+      "rotation": -10
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 1700,
+      "y": 700,
+      "width": 350,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 2200,
+      "y": 450,
+      "width": 300,
+      "height": 30,
+      "rotation": 15
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 2700,
+      "y": 600,
+      "width": 250,
+      "height": 40,
+      "rotation": -20
+    },
+
+    {
+      "type": "platform",
+      "x": 3200,
+      "y": 350,
+      "width": 400,
+      "height": 30,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 3800,
+      "y": 850,
+      "width": 500,
+      "height": 50,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 4500,
+      "y": 500,
+      "width": 300,
+      "height": 30,
+      "rotation": -15
+    },
+
+    {
+      "type": "platform",
+      "x": 5100,
+      "y": 300,
+      "width": 250,
+      "height": 30,
+      "rotation": 20
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 5700,
+      "y": 700,
+      "width": 400,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 6400,
+      "y": 450,
+      "width": 350,
+      "height": 30,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 7000,
+      "y": 250,
+      "width": 300,
+      "height": 30,
+      "rotation": -25
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 7600,
+      "y": 500,
+      "width": 450,
+      "height": 40,
+      "rotation": 10
+    },
+
+    {
+      "type": "swing",
+      "x": 900,
+      "y": 150
+    },
+
+    {
+      "type": "swing",
+      "x": 2900,
+      "y": 200
+    },
+
+    {
+      "type": "swing",
+      "x": 5200,
+      "y": 150
+    },
+
+    {
+      "type": "swing",
+      "x": 7300,
+      "y": 100
+    }
+  ]
+}
