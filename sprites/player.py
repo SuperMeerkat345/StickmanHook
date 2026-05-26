@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         # auto-add to groups
         game_state.all_sprites.add(self)
         
+        self.player = True
         # visual
         self.radius = 15
         self.diameter = self.radius*2

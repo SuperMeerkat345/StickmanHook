@@ -27,10 +27,12 @@ class Camera:
         )
     
     def apply_pos_exact(self, pos):
-        pos.x = 0
-        pos.y = 0
+        self.offset.x = pos.x
+        self.offset.y = pos.y
+
         return (
-            pos.x,
-            pos.y
+            self.offset.x,
+            self.offset.y
         )
+        
     

@@ -83,7 +83,11 @@ while True:
     game_state.camera.update(game_state.player) # follow player with cam
 
     for entity in game_state.all_sprites:
-        game_state.virtual_screen.blit(entity.surf, game_state.camera.apply_pos(entity.rect))
+
+        if hasattr(entity, 'player') and game_state.game_won:
+             game_state.virtual_screen.blit(entity.surf, game_state.camera.apply_pos_exact(entity.pos))
+        else:
+            game_state.virtual_screen.blit(entity.surf, game_state.camera.apply(entity.rect))
         if not game_state.paused:
             entity.update()
             if hasattr(entity, 'draw'):
