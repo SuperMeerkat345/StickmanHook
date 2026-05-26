@@ -39,5 +39,14 @@ class Camera:
             self.offset.x,
             self.offset.y
         )
+    
+    def apply_parallax(self, pos, parallax):
+        entity_x = pos.x - (self.offset.x * parallax)
+        entity_y = pos.y
+
+        return (
+            entity_x,
+            entity_y
+        )
         
     

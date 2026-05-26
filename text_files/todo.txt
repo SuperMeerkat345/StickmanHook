@@ -1,8 +1,5 @@
-
-3. implement working version of the snap?
-4. cleanup game.py
-5. ADD WIN CONDITION
-6. Add global file for player/cam?
-7. make clouds a sprite/class
+7. make clouds spawn on the right?
 8. make pause menu more idiomatic
-9. implement z-scaling for clouds??
+9. add more levels
+10. add win text/celebration/zoom
+11. main menu?? settings, level selection, etc. (i could only think of two examples)

@@ -268,7 +268,7 @@ class Player(pygame.sprite.Sprite):
             self.acc.x -= constants.ACCEL
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.acc.x += constants.ACCEL
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and not self.game_state.game_won:
             self.connect()
         elif self.connection: # if not pressing space, clear connection
             self.game_state.all_sprites.remove(self.connection)

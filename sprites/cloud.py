@@ -43,6 +43,7 @@ class Cloud(pygame.sprite.Sprite):
         # draw
         self.surf = Cloud.IMAGE.copy()
         self.rect = self.surf.get_rect(center=(self.x, self.y))
+        self.parallax = 0.2 # https://en.wikipedia.org/wiki/Parallax (found out about this today)
     
     def update(self):
         self.x += self.speed

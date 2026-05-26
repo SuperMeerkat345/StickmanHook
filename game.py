@@ -79,7 +79,21 @@ while True:
 
 
     for entity in game_state.all_sprites:
-        game_state.virtual_screen.blit(entity.surf, game_state.camera.apply(entity.rect))
+        if isinstance(entity, Cloud):
+            
+
+            game_state.virtual_screen.blit(
+                entity.surf,
+                game_state.camera.apply_parallax(
+                    entity.rect,
+                    entity.parallax
+                )
+            )
+        else:
+            game_state.virtual_screen.blit(
+                entity.surf, 
+                game_state.camera.apply(entity.rect)
+            )
         if not game_state.paused:
             entity.update()
             
