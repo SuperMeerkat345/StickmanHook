@@ -15,6 +15,8 @@ class GameState:
         # global flags
         self.paused = False
 
+
+        self.game_won = False
         # global level attributes 
         # start with none, they get init'd when the level loader loads a level
         self.player = None

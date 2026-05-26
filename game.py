@@ -83,9 +83,14 @@ while True:
     game_state.camera.update(game_state.player) # follow player with cam
 
     for entity in game_state.all_sprites:
-        game_state.virtual_screen.blit(entity.surf, game_state.camera.apply(entity.rect))
+        game_state.virtual_screen.blit(entity.surf, game_state.camera.apply_pos(entity.rect))
         if not game_state.paused:
             entity.update()
+            if hasattr(entity, 'draw'):
+                entity.draw()
+            else:
+                pass
+                #print("Entity does not have a draw method")
         
     
 

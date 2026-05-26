@@ -6,6 +6,7 @@ import utils.audio as audio
 from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
 from sprites.connector import Connector
+from utils.camera import Camera
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game_state, startx, starty):
@@ -233,7 +234,7 @@ class Player(pygame.sprite.Sprite):
 
     def check_death(self):
         # if not connected and below death barrier -- reset
-        if not self.connection and self.pos.y > constants.DEATH_BARRIER:
+        if not self.connection and self.pos.y > constants.DEATH_BARRIER and self.game_state.game_won == False:
             audio.play("./assets/audio/scream.mp3", 1, 0)
             time.sleep(1.5)
             self.pos = self.game_state.start_pos
@@ -246,6 +247,13 @@ class Player(pygame.sprite.Sprite):
             self.vel *= 0.95
             #return True
             self.acc = pygame.math.Vector2(0, 0) 
+            
+            #play win sound
+            if self.game_state.game_won == False:
+                self.game_state.virtual_screen = pygame.Surface((constants.NOTACTUALVIRTUAL_WIDTH, constants.NOTACTUALVIRTUAL_HEIGHT), pygame.SRCALPHA)
+
+                audio.play("./assets/audio/hey.mp3", 0, 0)
+                self.game_state.game_won = True
     
 
     # processes key inputs

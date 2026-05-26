@@ -5,6 +5,10 @@ import utils.constants as constants
 class FinishLine(pygame.sprite.Sprite):
     def __init__(self, game_state, x):
         super().__init__()
+
+        self.origin_image = pygame.image.load("./assets/images/finishline1.png")
+        self.image = self.origin_image.convert()
+
         self.game_state = game_state
         self.game_state.all_sprites.add(self)
 
@@ -19,3 +23,6 @@ class FinishLine(pygame.sprite.Sprite):
 
     def update(self):
         pass
+    
+    def draw(self):
+        self.surf.blit(self.image, (0, 0))
