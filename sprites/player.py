@@ -43,6 +43,8 @@ class Player(pygame.sprite.Sprite):
         # step 0: calculate accel
         self.acc = pygame.math.Vector2(0, constants.GRAVITY) # zero acceleration at start of frame
         self.process_input() # check which keys are held to determine acceleration (DEBUG)    
+
+        self.check_win()
        
         # step 1: apply accel to velocity
         self.vel += self.acc
@@ -234,12 +236,16 @@ class Player(pygame.sprite.Sprite):
         if not self.connection and self.pos.y > constants.DEATH_BARRIER:
             audio.play("./assets/audio/scream.mp3", 1, 0)
             time.sleep(1.5)
-            audio.numclouds = 0
-            audio.clouds = []
             self.pos = self.game_state.start_pos
             self.vel = pygame.math.Vector2(0, 0)
             audio.play(audio.music[audio.currentsong].value)
         
+    def check_win(self):
+        if self.game_state.finish_line and self.pos.x > self.game_state.finish_line.x:
+            # slow down for the cinema *fire_emoji**fire_emoji**fire_emoji*
+            self.vel *= 0.95
+            #return True
+            self.acc = pygame.math.Vector2(0, 0) 
     
 
     # processes key inputs

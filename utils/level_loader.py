@@ -9,6 +9,7 @@ from sprites.platform import Platform
 from sprites.bounce_pad import BouncePad
 from sprites.swing import Swing
 from sprites.player import Player
+from sprites.finish_line import FinishLine
 
 class LevelLoader:
     def __init__(self, game_state):
@@ -36,6 +37,8 @@ class LevelLoader:
         # INIT CAMERA
         self.game_state.camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
 
+        # finish line
+        self.game_state.finish_line = FinishLine(self.game_state, level["finish_line_pos"])
 
         for obj in level["objects"]:
             obj_type = obj["type"]

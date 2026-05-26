@@ -19,6 +19,7 @@ class GameState:
         # start with none, they get init'd when the level loader loads a level
         self.player = None
         self.camera = None
+        self.finish_line = None
 
         # for re-spawning (starting position)
         self.start_pos = pygame.math.Vector2(0, 0)

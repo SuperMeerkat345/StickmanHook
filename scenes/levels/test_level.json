@@ -1,6 +1,8 @@
 {
   "name": "Level 1",
 
+  "finish_line_pos": 2000, 
+
   "player_spawn": {
     "x": 500,
     "y": 100
