@@ -234,12 +234,23 @@ class Player(pygame.sprite.Sprite):
             self.pos = new_pos
 
     def check_death(self):
-        # if not connected and below death barrier -- reset
-        if not self.connection and self.pos.y > constants.DEATH_BARRIER and self.game_state.game_won == False:
+        if (
+            not self.connection
+            and self.pos.y > constants.DEATH_BARRIER
+            and not self.game_state.game_won
+        ):
             audio.play("./assets/audio/scream.mp3", 1, 0)
-            time.sleep(1.5)
-            self.pos = self.game_state.start_pos
+
+            # clear swing (trying to rem bug)
+            if self.connection:
+                self.game_state.all_sprites.remove(self.connection)
+                self.connection = None
+
+            # reset player
+            self.pos = pygame.math.Vector2(self.game_state.start_pos)
             self.vel = pygame.math.Vector2(0, 0)
+            self.acc = pygame.math.Vector2(0, 0)
+
             audio.play(audio.music[audio.currentsong].value)
         
     def check_win(self):

@@ -46,7 +46,6 @@ def goLeft(num):
     return num
 
 def play(filename, start = 0, repeat = -1):
-  
     pygame.mixer.init(frequency=16000)
     pygame.mixer.music.load(filename)
     pygame.mixer.music.play(repeat, start)

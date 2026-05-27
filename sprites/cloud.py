@@ -26,7 +26,7 @@ class Cloud(pygame.sprite.Sprite):
         
 
         # pos and velocity
-        player_pos = self.game_state.player.pos
+        player_pos = self.game_state.player.pos if self.game_state.player else pygame.math.Vector2((0, 0))
         self.x = random.randint( # set bounds around the players position
             int(player_pos.x-constants.VIRTUAL_WIDTH),
             int(player_pos.x-constants.VIRTUAL_WIDTH/1.5)

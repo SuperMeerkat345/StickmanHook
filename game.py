@@ -79,9 +79,10 @@ while True:
 
 
     for entity in game_state.all_sprites:
-        if isinstance(entity, Cloud):
+        if not game_state.paused:
+            entity.update()
             
-
+        if isinstance(entity, Cloud):
             game_state.virtual_screen.blit(
                 entity.surf,
                 game_state.camera.apply_parallax(
@@ -94,8 +95,9 @@ while True:
                 entity.surf, 
                 game_state.camera.apply(entity.rect)
             )
-        if not game_state.paused:
-            entity.update()
+        
+
+    
             
     # apply zoom
     

@@ -28,6 +28,12 @@ class LevelLoader:
         # level id
         self.level_id = level["level_id"]
 
+        # finish line
+        self.game_state.finish_line = FinishLine(self.game_state, level["finish_line_pos"])
+
+        # cloud manager
+        self.game_state.cloud_manager = CloudManager(self.game_state, 5)
+
         # INIT PLAYER
         self.game_state.player = Player(
             self.game_state, # world reference 
@@ -40,12 +46,6 @@ class LevelLoader:
 
         # INIT CAMERA (why is this capitalized)
         self.game_state.camera = Camera(constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT)
-
-        # finish line
-        self.game_state.finish_line = FinishLine(self.game_state, level["finish_line_pos"])
-
-        # cloud manager
-        self.game_state.cloud_manager = CloudManager(self.game_state, 5)
 
         for obj in level["objects"]:
             obj_type = obj["type"]
