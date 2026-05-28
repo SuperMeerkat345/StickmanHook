@@ -1,0 +1,365 @@
+{
+  "level_id": 3,
+
+  "finish_line_pos": 9000,
+
+  "player_spawn": {
+    "x": 200,
+    "y": 600
+  },
+
+  "objects": [
+
+    {
+      "type": "platform",
+      "x": -50,
+      "y": 950,
+      "width": 1200,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": -50,
+      "y": 200,
+      "width": 40,
+      "height": 800,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 1100,
+      "y": 200,
+      "width": 40,
+      "height": 800,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 50,
+      "y": 920,
+      "width": 200,
+      "height": 35,
+      "rotation": 0
+    },
+    {
+      "type": "bounce_pad",
+      "x": 300,
+      "y": 920,
+      "width": 200,
+      "height": 35,
+      "rotation": 0
+    },
+    {
+      "type": "bounce_pad",
+      "x": 550,
+      "y": 920,
+      "width": 200,
+      "height": 35,
+      "rotation": 0
+    },
+    {
+      "type": "bounce_pad",
+      "x": 800,
+      "y": 920,
+      "width": 200,
+      "height": 35,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 20,
+      "y": 680,
+      "width": 160,
+      "height": 30,
+      "rotation": 90
+    },
+    {
+      "type": "bounce_pad",
+      "x": 20,
+      "y": 450,
+      "width": 160,
+      "height": 30,
+      "rotation": 90
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 960,
+      "y": 680,
+      "width": 160,
+      "height": 30,
+      "rotation": 90
+    },
+    {
+      "type": "bounce_pad",
+      "x": 960,
+      "y": 450,
+      "width": 160,
+      "height": 30,
+      "rotation": 90
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 150,
+      "y": 700,
+      "width": 180,
+      "height": 30,
+      "rotation": 0
+    },
+    {
+      "type": "bounce_pad",
+      "x": 450,
+      "y": 600,
+      "width": 180,
+      "height": 30,
+      "rotation": 0
+    },
+    {
+      "type": "bounce_pad",
+      "x": 750,
+      "y": 700,
+      "width": 180,
+      "height": 30,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 250,
+      "y": 430,
+      "width": 160,
+      "height": 30,
+      "rotation": 15
+    },
+    {
+      "type": "bounce_pad",
+      "x": 600,
+      "y": 350,
+      "width": 160,
+      "height": 30,
+      "rotation": -15
+    },
+    {
+      "type": "bounce_pad",
+      "x": 820,
+      "y": 460,
+      "width": 160,
+      "height": 30,
+      "rotation": 10
+    },
+
+    {
+      "type": "platform",
+      "x": 1050,
+      "y": 750,
+      "width": 300,
+      "height": 40,
+      "rotation": -30
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 1350,
+      "y": 900,
+      "width": 280,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 1750,
+      "y": 890,
+      "width": 260,
+      "height": 40,
+      "rotation": 8
+    },
+
+    {
+      "type": "platform",
+      "x": 2100,
+      "y": 880,
+      "width": 300,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "swing",
+      "x": 2250,
+      "y": 280
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 2500,
+      "y": 895,
+      "width": 260,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 2900,
+      "y": 880,
+      "width": 280,
+      "height": 40,
+      "rotation": -10
+    },
+
+    {
+      "type": "platform",
+      "x": 3250,
+      "y": 890,
+      "width": 300,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 3650,
+      "y": 875,
+      "width": 260,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 4050,
+      "y": 890,
+      "width": 280,
+      "height": 40,
+      "rotation": 12
+    },
+
+    {
+      "type": "swing",
+      "x": 4400,
+      "y": 270
+    },
+
+    {
+      "type": "platform",
+      "x": 4550,
+      "y": 880,
+      "width": 300,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 4950,
+      "y": 865,
+      "width": 260,
+      "height": 40,
+      "rotation": -8
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 5350,
+      "y": 885,
+      "width": 280,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 5750,
+      "y": 870,
+      "width": 260,
+      "height": 40,
+      "rotation": 10
+    },
+
+    {
+      "type": "platform",
+      "x": 6100,
+      "y": 880,
+      "width": 300,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "swing",
+      "x": 6300,
+      "y": 260
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 6550,
+      "y": 890,
+      "width": 260,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 6950,
+      "y": 875,
+      "width": 280,
+      "height": 40,
+      "rotation": -12
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 7350,
+      "y": 885,
+      "width": 260,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 7700,
+      "y": 880,
+      "width": 320,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 8150,
+      "y": 870,
+      "width": 280,
+      "height": 40,
+      "rotation": 8
+    },
+
+    {
+      "type": "bounce_pad",
+      "x": 8550,
+      "y": 885,
+      "width": 260,
+      "height": 40,
+      "rotation": 0
+    },
+
+    {
+      "type": "platform",
+      "x": 8850,
+      "y": 880,
+      "width": 400,
+      "height": 40,
+      "rotation": 0
+    }
+
+  ]
+}

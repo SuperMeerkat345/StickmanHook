@@ -4,60 +4,37 @@
   "finish_line_pos": 5000, 
 
   "player_spawn": {
-    "x": 500,
+    "x": 275,
     "y": 100
   },
 
   "objects": [
-
-    {
-      "type": "platform",
-      "x": 500,
-      "y": 350,
-      "width": 300,
-      "height": 30,
-      "rotation": 0
-    },
-
     {
       "type": "bounce_pad",
-      "x": 500,
-      "y": 800,
-      "width": 400,
-      "height": 40,
+      "x": 1400,
+      "y": 1000,
+      "width": 2000,
+      "height": 35,
       "rotation": 0
     },
-
     {
       "type": "bounce_pad",
       "x": 250,
       "y": 650,
       "width": 300,
-      "height": 40,
-      "rotation": 30
+      "height": 35,
+      "rotation": 35
     },
-
-    {
-      "type": "bounce_pad",
-      "x": 750,
-      "y": 650,
-      "width": 300,
-      "height": 40,
-      "rotation": -30
-    },
-
     {
       "type": "swing",
       "x": 0,
       "y": 300
     },
-
     {
       "type": "swing",
       "x": 2000,
       "y": 300
     },
-
     {
       "type": "swing",
       "x": 4000,

@@ -240,6 +240,7 @@ class Player(pygame.sprite.Sprite):
             and not self.game_state.game_won
         ):
             audio.play("./assets/audio/scream.mp3", 1, 0)
+            
 
             # clear swing (trying to rem bug)
             if self.connection:
@@ -254,7 +255,12 @@ class Player(pygame.sprite.Sprite):
             audio.play(audio.music[audio.currentsong].value)
         
     def check_win(self):
-        if self.game_state.finish_line and self.pos.x > self.game_state.finish_line.x:
+        if (
+            self.game_state.finish_line 
+            and self.pos.x > self.game_state.finish_line.x
+        ):
+            self.game_state.camera.zoom_to_player()
+            
             # slow down for the cinema *fire_emoji**fire_emoji**fire_emoji*
             self.vel *= 0.95
             self.acc = pygame.math.Vector2(0, 0) 
