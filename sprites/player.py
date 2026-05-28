@@ -240,7 +240,7 @@ class Player(pygame.sprite.Sprite):
             and not self.game_state.game_won
         ):
             audio.play("./assets/audio/scream.mp3", 1, 0)
-            
+            time.sleep(1)
 
             # clear swing (trying to rem bug)
             if self.connection:
@@ -267,8 +267,6 @@ class Player(pygame.sprite.Sprite):
             
             #play win sound
             if self.game_state.game_won == False:
-                #self.game_state.virtual_screen = pygame.Surface((constants.NOTACTUALVIRTUAL_WIDTH, constants.NOTACTUALVIRTUAL_HEIGHT), pygame.SRCALPHA)
-
                 audio.play("./assets/audio/hey.mp3", 0, 0)
                 self.game_state.game_won = True
         
