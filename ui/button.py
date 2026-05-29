@@ -9,5 +9,8 @@ class Button:
         self.height = h
         self.pos = pos
 
+    def handle_event(self):
+        pass
+
     def update()
         pass

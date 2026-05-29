@@ -272,6 +272,7 @@ class Player(pygame.sprite.Sprite):
         
             if self.vel.length() == 0:
                 self.game_state.level_loader.load_next_level()
+                audio.play(audio.music[audio.currentsong].value)
             
     
 
@@ -279,15 +280,16 @@ class Player(pygame.sprite.Sprite):
     def process_input(self):
         keys = pygame.key.get_pressed()
         
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.acc.x -= constants.ACCEL
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.acc.x += constants.ACCEL
+        #if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        #    self.acc.x -= constants.ACCEL
+        #if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        #    self.acc.x += constants.ACCEL
         if keys[pygame.K_SPACE] and not self.game_state.game_won:
             self.connect()
         elif self.connection: # if not pressing space, clear connection
             self.game_state.all_sprites.remove(self.connection)
             self.connection = None
+
 
     
 

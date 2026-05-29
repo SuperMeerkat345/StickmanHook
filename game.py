@@ -77,7 +77,6 @@ while True:
     # draw sprites and update sprites
     game_state.camera.update(game_state.player) # follow player with cam
 
-
     for entity in game_state.all_sprites:
         if not game_state.paused:
             entity.update()
@@ -95,12 +94,7 @@ while True:
                 entity.surf, 
                 game_state.camera.apply(entity.rect)
             )
-        
 
-    
-            
-    # apply zoom
-    
     #scale screen
     scaled_screen = pygame.transform.scale(
         game_state.virtual_screen, 
@@ -116,6 +110,10 @@ while True:
         audio.startedMusic = False
     else:
         pygame.mixer.music.unpause()
+    
+    if game_state.menu:
+        game_state.menu.update()
+        game_state.menu.draw()
     
     # Check if music is not playing, then start it
     if not audio.startedMusic:

@@ -2,12 +2,14 @@ import pygame
 import utils.constants as constants
 
 from utils.level_loader import LevelLoader
+from ui.menu import Menu
 
 class GameState:
     def __init__(self):
         # app
         self.virtual_screen = pygame.Surface((constants.VIRTUAL_WIDTH, constants.VIRTUAL_HEIGHT), pygame.SRCALPHA)
         self.displaysurface = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.SCALED)
+        self.menu = None
 
         # groups
         self.all_sprites = pygame.sprite.Group()
